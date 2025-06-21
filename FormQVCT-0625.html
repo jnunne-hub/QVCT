@@ -1,0 +1,992 @@
+
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Questionnaire Bien-être en Entreprise</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@300;400;700&display=swap');
+        
+        body {
+            font-family: 'Comic Neue', cursive;
+            background-color: #f8f9fa;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%239beba7' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
+        }
+        
+        .hand-drawn {
+            border: 2px solid #333;
+            border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+            box-shadow: 5px 5px 0px rgba(0,0,0,0.1);
+        }
+        
+        .hand-drawn-border {
+            border: 2px solid #333;
+            border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+        }
+        
+        .hand-drawn-button {
+            border: 2px solid #333;
+            border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+            transition: all 0.3s ease;
+        }
+        
+        .hand-drawn-button:hover {
+            transform: translate(-3px, -3px);
+            box-shadow: 5px 5px 0px rgba(0,0,0,0.2);
+        }
+        
+        .hand-drawn-input {
+            border: 2px solid #333;
+            border-radius: 15px 255px 15px 255px/255px 15px 255px 15px;
+        }
+        
+        .hand-drawn-checkbox {
+            border: 2px solid #333;
+            border-radius: 5px;
+        }
+        
+        .hand-drawn-radio {
+            border: 2px solid #333;
+            border-radius: 50%;
+        }
+        
+        .section-icon {
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+        
+        .progress-bar {
+            transition: width 0.5s ease-in-out;
+        }
+        
+        .question-section {
+            transition: all 0.5s ease;
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .wiggle:hover {
+            animation: wiggle 0.5s ease-in-out;
+        }
+        
+        @keyframes wiggle {
+            0% { transform: rotate(0deg); }
+            25% { transform: rotate(5deg); }
+            50% { transform: rotate(0deg); }
+            75% { transform: rotate(-5deg); }
+            100% { transform: rotate(0deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="min-h-screen py-8">
+        <div class="container mx-auto px-4 max-w-3xl">
+            <div class="hand-drawn bg-white mb-8 overflow-hidden">
+                <!-- En-tête -->
+<div class="bg-green-200 p-6 relative overflow-hidden fixed top-0 left-0 w-full z-30 shadow-lg">
+                    <div class="absolute top-0 right-0 w-32 h-32 -mt-8 -mr-8 opacity-20">
+                        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                            <path fill="#006400" d="M47.1,-57.5C59.9,-47.3,68.7,-31.6,71.5,-14.8C74.3,2,71.1,20,62.4,33.5C53.7,47,39.6,56,24.1,62.7C8.6,69.4,-8.3,73.8,-24.4,70.1C-40.5,66.4,-55.8,54.6,-65.2,39.2C-74.6,23.8,-78.1,4.8,-74.2,-12.3C-70.3,-29.4,-59,-44.6,-44.8,-54.6C-30.6,-64.6,-13.6,-69.4,2,-71.8C17.6,-74.2,34.3,-67.7,47.1,-57.5Z" transform="translate(100 100)" />
+                        </svg>
+                    </div>
+                    <h1 class="text-3xl md:text-4xl font-bold text-green-800 relative z-10 animate__animated animate__fadeInDown">Questionnaire Bien-être au Travail</h1>
+                    <p class="mt-2 text-green-700 relative z-10 animate__animated animate__fadeIn animate__delay-1s">Aidez-nous à créer des ateliers qui correspondent à vos besoins</p>
+                    <div class="flex items-center mt-4 animate__animated animate__fadeIn animate__delay-2s">
+                        <i class="fas fa-heart text-red-500 mr-2"></i>
+                        <i class="fas fa-smile text-yellow-500 mr-2"></i>
+                        <i class="fas fa-spa text-green-500 mr-2"></i>
+                        <i class="fas fa-peace text-blue-500 mr-2"></i>
+                        <i class="fas fa-seedling text-green-600"></i>
+                    </div>
+                </div>
+
+                <!-- Barre de progression -->
+                <div class="px-6 pt-4">
+                    <div class="w-full bg-gray-200 rounded-full h-4 hand-drawn-border overflow-hidden">
+                        <div id="progress-bar" class="progress-bar bg-green-400 h-4" style="width: 0%"></div>
+                    </div>
+                    <p id="progress-text" class="text-sm text-gray-500 text-right mt-1 italic">0% complété</p>
+                </div>
+
+                <!-- Formulaire -->
+                <form id="wellness-form" class="p-6">
+                    <!-- Introduction -->
+                    <div class="mb-8 animate__animated animate__fadeIn">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mr-4 hand-drawn">
+                                <i class="fas fa-info-circle text-green-600 text-xl"></i>
+                            </div>
+                            <p class="text-gray-700">Nous souhaitons mettre en place des ateliers bien-être pour améliorer votre qualité de vie au travail. Merci de nous indiquer vos préférences.</p>
+                        </div>
+                    </div>
+                    <!-- Informations personnelles -->
+                    <div class="mb-8 border-b-2 border-dashed border-gray-300 pb-6 fade-in">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mr-4 hand-drawn section-icon">
+                                <i class="fas fa-user text-purple-600 text-xl"></i>
+                            </div>
+                            <h2 class="text-xl font-semibold text-gray-800">Informations personnelles</h2>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 ml-16">
+                            <div>
+                                <div class="flex justify-between items-center mb-1">
+                                    <label for="name" class="block text-sm font-medium text-gray-700">Nom et prénom</label>
+                                    <div class="flex items-center">
+                                        <input type="checkbox" id="anonymous" name="anonymous" class="opacity-0 absolute h-8 w-8" onchange="toggleAnonymous()">
+                                        <div class="hand-drawn-checkbox w-5 h-5 bg-white flex items-center justify-center mr-2">
+                                            <i class="fas fa-check text-green-600 text-xs hidden checked-box"></i>
+                                        </div>
+                                        <label for="anonymous" class="text-sm text-gray-600">Rester anonyme</label>
+                                    </div>
+                                </div>
+                                <input type="text" id="name" name="name" class="w-full px-3 py-2 hand-drawn-input focus:outline-none focus:ring-2 focus:ring-green-500">
+                            </div>
+                            <div>
+    <label for="department" class="block text-sm font-medium text-gray-700 mb-1">Service / Opération</label>
+    <select id="department" name="department" required class="w-full px-3 py-2 hand-drawn-input focus:outline-none focus:ring-2 focus:ring-green-500">
+        <option value="">Sélectionnez une opération</option>
+        <option value="Support">Support</option>
+        <option value="RH">RH</option>
+        <option value="AG2R">AG2R</option>
+        <option value="UCPA">UCPA</option>
+        <option value="CNAV">CNAV</option>
+        <option value="Abeille">Abeille</option>
+        <option value="IRP Auto">IRP Auto</option>
+        <option value="Engie DCP">Engie DCP</option>
+        <option value="EHS">EHS</option>
+        <option value="Enedis">Enedis</option>
+    </select>
+</div>
+                        </div>
+                        
+                        <!-- Ajout des champs pour l'identité et l'activité -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 ml-16">
+                            <div>
+                                <label for="identity" class="block text-sm font-medium text-gray-700 mb-1">Identité</label>
+                                <select id="identity" name="identity" required class="w-full px-3 py-2 hand-drawn-input focus:outline-none focus:ring-2 focus:ring-green-500">
+                                    <option value="">Sélectionnez votre identité</option>
+                                    <option value="homme">Homme</option>
+                                    <option value="femme">Femme</option>
+                                    <option value="autre">Autre</option>
+                                    <option value="ne-pas-preciser">Je préfère ne pas préciser</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="activity" class="block text-sm font-medium text-gray-700 mb-1">Activité professionnelle</label>
+                                <select id="activity" name="activity" required class="w-full px-3 py-2 hand-drawn-input focus:outline-none focus:ring-2 focus:ring-green-500">
+    <option value="">Sélectionnez votre activité</option>
+    <option value="Téléconseiller">Téléconseiller</option>
+    <option value="Management opérationnel">Management opérationnel</option>
+    <option value="Ressources Humaines">Ressources Humaines</option>
+    <option value="Support">Support</option>
+</select>
+                            </div>
+                        </div>
+                        <div class="mt-4 ml-16" id="other-activity-container" style="display: none;">
+                            <label for="other-activity" class="block text-sm font-medium text-gray-700 mb-1">Précisez votre activité</label>
+                            <input type="text" id="other-activity" name="other-activity" class="w-full px-3 py-2 hand-drawn-input focus:outline-none focus:ring-2 focus:ring-green-500">
+                        </div>
+                    </div>
+
+                    <!-- Question sur la semaine QVCT -->
+                    <div class="mb-8 border-b-2 border-dashed border-gray-300 pb-6 fade-in">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mr-4 hand-drawn section-icon">
+                                <i class="fas fa-calendar-check text-blue-600 text-xl"></i>
+                            </div>
+                            <h2 class="text-xl font-semibold text-gray-800">Semaine de la Qualité de Vie au Travail (QVCT)</h2>
+                        </div>
+                        
+                        <div class="mb-4 ml-16">
+                            <p class="text-sm text-gray-600 mb-2">Avez-vous apprécié la semaine de la QVCT organisée récemment ?</p>
+                            <div class="flex flex-wrap items-center space-x-4">
+                                <label class="inline-flex items-center wiggle">
+                                    <input type="radio" name="qvct-satisfaction" value="très-satisfait" required class="form-radio text-green-600 opacity-0 absolute h-8 w-8">
+                                    <div class="hand-drawn-radio w-6 h-6 bg-white flex items-center justify-center mr-2">
+                                        <div class="hidden w-3 h-3 bg-green-600 rounded-full checked-radio"></div>
+                                    </div>
+                                    <span class="ml-2">Très satisfait(e)</span>
+                                </label>
+                                <label class="inline-flex items-center wiggle">
+                                    <input type="radio" name="qvct-satisfaction" value="satisfait" class="form-radio text-green-600 opacity-0 absolute h-8 w-8">
+                                    <div class="hand-drawn-radio w-6 h-6 bg-white flex items-center justify-center mr-2">
+                                        <div class="hidden w-3 h-3 bg-green-600 rounded-full checked-radio"></div>
+                                    </div>
+                                    <span class="ml-2">Satisfait(e)</span>
+                                </label>
+                                <label class="inline-flex items-center wiggle">
+                                    <input type="radio" name="qvct-satisfaction" value="peu-satisfait" class="form-radio text-green-600 opacity-0 absolute h-8 w-8">
+                                    <div class="hand-drawn-radio w-6 h-6 bg-white flex items-center justify-center mr-2">
+                                        <div class="hidden w-3 h-3 bg-green-600 rounded-full checked-radio"></div>
+                                    </div>
+                                    <span class="ml-2">Peu satisfait(e)</span>
+                                </label>
+                                <label class="inline-flex items-center wiggle">
+                                    <input type="radio" name="qvct-satisfaction" value="pas-satisfait" class="form-radio text-green-600 opacity-0 absolute h-8 w-8">
+                                    <div class="hand-drawn-radio w-6 h-6 bg-white flex items-center justify-center mr-2">
+                                        <div class="hidden w-3 h-3 bg-green-600 rounded-full checked-radio"></div>
+                                    </div>
+                                    <span class="ml-2">Pas satisfait(e)</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="mb-4 ml-16">
+                            <p class="text-sm text-gray-600 mb-2">Quels aspects de la semaine QVCT avez-vous particulièrement appréciés ?</p>
+                            <textarea name="qvct-liked" rows="2" class="w-full px-3 py-2 hand-drawn-input focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="Ex: les ateliers, les intervenants, l'organisation..."></textarea>
+                        </div>
+                        <div class="mb-4 ml-16">
+                            <p class="text-sm text-gray-600 mb-2">Quels aspects pourraient être améliorés selon vous ?</p>
+                            <textarea name="qvct-improvement" rows="2" class="w-full px-3 py-2 hand-drawn-input focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="Ex: plus d'ateliers pratiques, meilleure communication..."></textarea>
+                        </div>
+                    </div>
+
+
+                    <!-- Atelier Sport -->
+                    <div id="sport-section" class="question-section mb-8 border-b-2 border-dashed border-gray-300 pb-6 fade-in">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mr-4 hand-drawn section-icon">
+                                <i class="fas fa-running text-red-600 text-xl"></i>
+                            </div>
+                            <h2 class="text-xl font-semibold text-gray-800">Atelier Sport</h2>
+                        </div>
+                        
+                        <div class="mb-4 ml-16">
+                            <p class="text-sm text-gray-600 mb-2">Seriez-vous intéressé(e) par des ateliers de sport en entreprise ?</p>
+                            <div class="flex items-center space-x-4">
+                                <label class="inline-flex items-center wiggle">
+                                    <input type="radio" name="sport-interest" value="oui" required class="form-radio text-green-600 opacity-0 absolute h-8 w-8" onchange="toggleSection('sport')">
+                                    <div class="hand-drawn-radio w-6 h-6 bg-white flex items-center justify-center mr-2">
+                                        <div class="hidden w-3 h-3 bg-green-600 rounded-full checked-radio"></div>
+                                    </div>
+                                    <span class="ml-2">Oui</span>
+                                </label>
+                                <label class="inline-flex items-center wiggle">
+                                    <input type="radio" name="sport-interest" value="non" class="form-radio text-green-600 opacity-0 absolute h-8 w-8" onchange="toggleSection('sport')">
+                                    <div class="hand-drawn-radio w-6 h-6 bg-white flex items-center justify-center mr-2">
+                                        <div class="hidden w-3 h-3 bg-green-600 rounded-full checked-radio"></div>
+                                    </div>
+                                    <span class="ml-2">Non</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div id="sport-details" class="pl-4 border-l-2 border-red-200 hidden ml-16">
+                            <div class="mb-4">
+                                <p class="text-sm text-gray-600 mb-2">À quelle fréquence souhaiteriez-vous participer ?</p>
+                                <select name="sport-frequency" class="w-full px-3 py-2 hand-drawn-input focus:outline-none focus:ring-2 focus:ring-green-500">
+                                    <option value="">Sélectionnez une option</option>
+                                    <option value="hebdomadaire">Une fois par semaine</option>
+                                    <option value="bi-mensuel">Une fois tous les 15 jours</option>
+                                    <option value="mensuel">Une fois par mois</option>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <p class="text-sm text-gray-600 mb-2">Seriez-vous prêt(e) à participer en dehors des heures de travail ?</p>
+                                <div class="space-y-2">
+                                    <label class="inline-flex items-center wiggle">
+                                        <input type="radio" name="sport-outside-hours" value="non" class="form-radio text-green-600 opacity-0 absolute h-8 w-8">
+                                        <div class="hand-drawn-radio w-6 h-6 bg-white flex items-center justify-center mr-2">
+                                            <div class="hidden w-3 h-3 bg-green-600 rounded-full checked-radio"></div>
+                                        </div>
+                                        <span class="ml-2">Non</span>
+                                    </label>
+                                    <br>
+                                    <label class="inline-flex items-center wiggle">
+                                        <input type="checkbox" name="sport-time-lunch" class="opacity-0 absolute h-8 w-8">
+                                        <div class="hand-drawn-checkbox w-5 h-5 bg-white flex items-center justify-center mr-2">
+                                            <i class="fas fa-check text-green-600 text-xs hidden checked-box"></i>
+                                        </div>
+                                        <span class="ml-2">Pendant la pause déjeuner</span>
+                                    </label>
+                                    <br>
+                                    <label class="inline-flex items-center wiggle">
+                                        <input type="checkbox" name="sport-time-evening" class="opacity-0 absolute h-8 w-8">
+                                        <div class="hand-drawn-checkbox w-5 h-5 bg-white flex items-center justify-center mr-2">
+                                            <i class="fas fa-check text-green-600 text-xs hidden checked-box"></i>
+                                        </div>
+                                        <span class="ml-2">En fin de journée (après le travail)</span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <p class="text-sm text-gray-600 mb-2">Quels types d'activités sportives vous intéresseraient ?</p>
+                                <textarea name="sport-types" rows="2" class="w-full px-3 py-2 hand-drawn-input focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="Ex: Pilate, yoga, fitness, stretching..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Atelier Nutrition -->
+                    <div id="nutrition-section" class="question-section mb-8 border-b-2 border-dashed border-gray-300 pb-6 fade-in">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center mr-4 hand-drawn section-icon">
+                                <i class="fas fa-apple-alt text-yellow-600 text-xl"></i>
+                            </div>
+                            <h2 class="text-xl font-semibold text-gray-800">Atelier Nutrition</h2>
+                        </div>
+                        
+                        <div class="mb-4 ml-16">
+                            <p class="text-sm text-gray-600 mb-2">Seriez-vous intéressé(e) par des ateliers de nutrition ?</p>
+                            <div class="flex items-center space-x-4">
+                                <label class="inline-flex items-center wiggle">
+                                    <input type="radio" name="nutrition-interest" value="oui" required class="form-radio text-green-600 opacity-0 absolute h-8 w-8" onchange="toggleSection('nutrition')">
+                                    <div class="hand-drawn-radio w-6 h-6 bg-white flex items-center justify-center mr-2">
+                                        <div class="hidden w-3 h-3 bg-green-600 rounded-full checked-radio"></div>
+                                    </div>
+                                    <span class="ml-2">Oui</span>
+                                </label>
+                                <label class="inline-flex items-center wiggle">
+                                    <input type="radio" name="nutrition-interest" value="non" class="form-radio text-green-600 opacity-0 absolute h-8 w-8" onchange="toggleSection('nutrition')">
+                                    <div class="hand-drawn-radio w-6 h-6 bg-white flex items-center justify-center mr-2">
+                                        <div class="hidden w-3 h-3 bg-green-600 rounded-full checked-radio"></div>
+                                    </div>
+                                    <span class="ml-2">Non</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div id="nutrition-details" class="pl-4 border-l-2 border-yellow-200 hidden ml-16">
+                            <div class="mb-4">
+                                <p class="text-sm text-gray-600 mb-2">À quelle fréquence souhaiteriez-vous participer ?</p>
+                                <select name="nutrition-frequency" class="w-full px-3 py-2 hand-drawn-input focus:outline-none focus:ring-2 focus:ring-green-500">
+                                    <option value="">Sélectionnez une option</option>
+                                    <option value="trimestre">Une fois par trimestre</option>
+                                    <option value="semestre">Une fois par semestre</option>
+                                    <option value="annuel">Une fois par an</option>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <p class="text-sm text-gray-600 mb-2">Seriez-vous prêt(e) à participer en dehors des heures de travail ?</p>
+                                <div class="space-y-2">
+                                    <label class="inline-flex items-center wiggle">
+                                        <input type="radio" name="nutrition-outside-hours" value="non" class="form-radio text-green-600 opacity-0 absolute h-8 w-8">
+                                        <div class="hand-drawn-radio w-6 h-6 bg-white flex items-center justify-center mr-2">
+                                            <div class="hidden w-3 h-3 bg-green-600 rounded-full checked-radio"></div>
+                                        </div>
+                                        <span class="ml-2">Non</span>
+                                    </label>
+                                    <br>
+                                    <label class="inline-flex items-center wiggle">
+                                        <input type="checkbox" name="nutrition-time-lunch" class="opacity-0 absolute h-8 w-8">
+                                        <div class="hand-drawn-checkbox w-5 h-5 bg-white flex items-center justify-center mr-2">
+                                            <i class="fas fa-check text-green-600 text-xs hidden checked-box"></i>
+                                        </div>
+                                        <span class="ml-2">Pendant la pause déjeuner</span>
+                                    </label>
+                                    <br>
+                                    <label class="inline-flex items-center wiggle">
+                                        <input type="checkbox" name="nutrition-time-evening" class="opacity-0 absolute h-8 w-8">
+                                        <div class="hand-drawn-checkbox w-5 h-5 bg-white flex items-center justify-center mr-2">
+                                            <i class="fas fa-check text-green-600 text-xs hidden checked-box"></i>
+                                        </div>
+                                        <span class="ml-2">En fin de journée (après le travail)</span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <p class="text-sm text-gray-600 mb-2">Quels sujets de nutrition vous intéresseraient particulièrement ?</p>
+                                <textarea name="nutrition-topics" rows="2" class="w-full px-3 py-2 hand-drawn-input focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="Ex: alimentation équilibrée, repas rapides et sains..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Atelier Massage -->
+                    <div id="massage-section" class="question-section mb-8 border-b-2 border-dashed border-gray-300 pb-6 fade-in">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 bg-pink-100 rounded-full flex items-center justify-center mr-4 hand-drawn section-icon">
+                                <i class="fas fa-hands text-pink-600 text-xl"></i>
+                            </div>
+                            <h2 class="text-xl font-semibold text-gray-800">Atelier Massage</h2>
+                        </div>
+                        
+                        <div class="mb-4 ml-16">
+                            <p class="text-sm text-gray-600 mb-2">Seriez-vous intéressé(e) par des séances de massage en entreprise ?</p>
+                            <div class="flex items-center space-x-4">
+                                <label class="inline-flex items-center wiggle">
+                                    <input type="radio" name="massage-interest" value="oui" required class="form-radio text-green-600 opacity-0 absolute h-8 w-8" onchange="toggleSection('massage')">
+                                    <div class="hand-drawn-radio w-6 h-6 bg-white flex items-center justify-center mr-2">
+                                        <div class="hidden w-3 h-3 bg-green-600 rounded-full checked-radio"></div>
+                                    </div>
+                                    <span class="ml-2">Oui</span>
+                                </label>
+                                <label class="inline-flex items-center wiggle">
+                                    <input type="radio" name="massage-interest" value="non" class="form-radio text-green-600 opacity-0 absolute h-8 w-8" onchange="toggleSection('massage')">
+                                    <div class="hand-drawn-radio w-6 h-6 bg-white flex items-center justify-center mr-2">
+                                        <div class="hidden w-3 h-3 bg-green-600 rounded-full checked-radio"></div>
+                                    </div>
+                                    <span class="ml-2">Non</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div id="massage-details" class="pl-4 border-l-2 border-pink-200 hidden ml-16">
+                            <div class="mb-4">
+                                <p class="text-sm text-gray-600 mb-2">À quelle fréquence souhaiteriez-vous participer ?</p>
+                                <select name="massage-frequency" class="w-full px-3 py-2 hand-drawn-input focus:outline-none focus:ring-2 focus:ring-green-500">
+                                    <option value="">Sélectionnez une option</option>
+                                    <option value="trimestre">Une fois par trimestre</option>
+                                    <option value="semestre">Une fois par semestre</option>
+                                    <option value="annuel">Une fois par an</option>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <p class="text-sm text-gray-600 mb-2">Seriez-vous prêt(e) à participer en dehors des heures de travail ?</p>
+                                <div class="space-y-2">
+                                    <label class="inline-flex items-center wiggle">
+                                        <input type="radio" name="massage-outside-hours" value="non" class="form-radio text-green-600 opacity-0 absolute h-8 w-8">
+                                        <div class="hand-drawn-radio w-6 h-6 bg-white flex items-center justify-center mr-2">
+                                            <div class="hidden w-3 h-3 bg-green-600 rounded-full checked-radio"></div>
+                                        </div>
+                                        <span class="ml-2">Non</span>
+                                    </label>
+                                    <br>
+                                    <label class="inline-flex items-center wiggle">
+                                        <input type="checkbox" name="massage-time-lunch" class="opacity-0 absolute h-8 w-8">
+                                        <div class="hand-drawn-checkbox w-5 h-5 bg-white flex items-center justify-center mr-2">
+                                            <i class="fas fa-check text-green-600 text-xs hidden checked-box"></i>
+                                        </div>
+                                        <span class="ml-2">Pendant la pause déjeuner</span>
+                                    </label>
+                                    <br>
+                                    <label class="inline-flex items-center wiggle">
+                                        <input type="checkbox" name="massage-time-evening" class="opacity-0 absolute h-8 w-8">
+                                        <div class="hand-drawn-checkbox w-5 h-5 bg-white flex items-center justify-center mr-2">
+                                            <i class="fas fa-check text-green-600 text-xs hidden checked-box"></i>
+                                        </div>
+                                        <span class="ml-2">En fin de journée (après le travail)</span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <p class="text-sm text-gray-600 mb-2">Quels types de massage vous intéresseraient ?</p>
+                                <textarea name="massage-types" rows="2" class="w-full px-3 py-2 hand-drawn-input focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="Ex: massage assis, massage des mains..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Atelier Sophrologie -->
+                    <div id="sophrology-section" class="question-section mb-8 border-b-2 border-dashed border-gray-300 pb-6 fade-in">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mr-4 hand-drawn section-icon">
+                                <i class="fas fa-brain text-blue-600 text-xl"></i>
+                            </div>
+                            <h2 class="text-xl font-semibold text-gray-800">Atelier Sophrologie</h2>
+                        </div>
+                        
+                        <div class="mb-4 ml-16">
+                            <p class="text-sm text-gray-600 mb-2">Seriez-vous intéressé(e) par des ateliers de sophrologie ?</p>
+                            <div class="flex items-center space-x-4">
+                                <label class="inline-flex items-center wiggle">
+                                    <input type="radio" name="sophrology-interest" value="oui" class="form-radio text-green-600 opacity-0 absolute h-8 w-8" onchange="toggleSection('sophrology')">
+                                    <div class="hand-drawn-radio w-6 h-6 bg-white flex items-center justify-center mr-2">
+                                        <div class="hidden w-3 h-3 bg-green-600 rounded-full checked-radio"></div>
+                                    </div>
+                                    <span class="ml-2">Oui</span>
+                                </label>
+                                <label class="inline-flex items-center wiggle">
+                                    <input type="radio" name="sophrology-interest" value="non" class="form-radio text-green-600 opacity-0 absolute h-8 w-8" onchange="toggleSection('sophrology')">
+                                    <div class="hand-drawn-radio w-6 h-6 bg-white flex items-center justify-center mr-2">
+                                        <div class="hidden w-3 h-3 bg-green-600 rounded-full checked-radio"></div>
+                                    </div>
+                                    <span class="ml-2">Non</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div id="sophrology-details" class="pl-4 border-l-2 border-blue-200 hidden ml-16">
+                            <div class="mb-4">
+                                <p class="text-sm text-gray-600 mb-2">À quelle fréquence souhaiteriez-vous participer ?</p>
+                                <select name="sophrology-frequency" class="w-full px-3 py-2 hand-drawn-input focus:outline-none focus:ring-2 focus:ring-green-500">
+                                    <option value="">Sélectionnez une option</option>
+                                    <option value="trimestre">Une fois par trimestre</option>
+                                    <option value="semestre">Une fois par semestre</option>
+                                    <option value="annuel">Une fois par an</option>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <p class="text-sm text-gray-600 mb-2">Seriez-vous prêt(e) à participer en dehors des heures de travail ?</p>
+                                <div class="space-y-2">
+                                    <label class="inline-flex items-center wiggle">
+                                        <input type="radio" name="sophrology-outside-hours" value="non" class="form-radio text-green-600 opacity-0 absolute h-8 w-8">
+                                        <div class="hand-drawn-radio w-6 h-6 bg-white flex items-center justify-center mr-2">
+                                            <div class="hidden w-3 h-3 bg-green-600 rounded-full checked-radio"></div>
+                                        </div>
+                                        <span class="ml-2">Non</span>
+                                    </label>
+                                    <br>
+                                    <label class="inline-flex items-center wiggle">
+                                        <input type="checkbox" name="sophrology-time-lunch" class="opacity-0 absolute h-8 w-8">
+                                        <div class="hand-drawn-checkbox w-5 h-5 bg-white flex items-center justify-center mr-2">
+                                            <i class="fas fa-check text-green-600 text-xs hidden checked-box"></i>
+                                        </div>
+                                        <span class="ml-2">Pendant la pause déjeuner</span>
+                                    </label>
+                                    <br>
+                                    <label class="inline-flex items-center wiggle">
+                                        <input type="checkbox" name="sophrology-time-evening" class="opacity-0 absolute h-8 w-8">
+                                        <div class="hand-drawn-checkbox w-5 h-5 bg-white flex items-center justify-center mr-2">
+                                            <i class="fas fa-check text-green-600 text-xs hidden checked-box"></i>
+                                        </div>
+                                        <span class="ml-2">En fin de journée (après le travail)</span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <p class="text-sm text-gray-600 mb-2">Quels objectifs souhaiteriez-vous atteindre avec la sophrologie ?</p>
+                                <textarea name="sophrology-goals" rows="2" class="w-full px-3 py-2 hand-drawn-input focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="Ex: gestion du stress, amélioration du sommeil..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Autres ateliers -->
+                    <div class="mb-8 border-b-2 border-dashed border-gray-300 pb-6 fade-in">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mr-4 hand-drawn section-icon">
+                                <i class="fas fa-plus-circle text-indigo-600 text-xl"></i>
+                            </div>
+                            <h2 class="text-xl font-semibold text-gray-800">Autres ateliers bien-être</h2>
+                        </div>
+                        
+                        <p class="text-sm text-gray-600 mb-4 ml-16">Parmi les autres ateliers suivants, lesquels vous intéresseraient ?</p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 ml-16">
+                            <!-- Méditation -->
+                            <div class="mb-4 transform hover:scale-105 transition-transform duration-300">
+                                <div class="flex items-center mb-2">
+                                    <input type="checkbox" id="meditation" name="other-workshops" value="meditation" class="opacity-0 absolute h-8 w-8">
+                                    <div class="hand-drawn-checkbox w-5 h-5 bg-white flex items-center justify-center mr-2">
+                                        <i class="fas fa-check text-green-600 text-xs hidden checked-box"></i>
+                                    </div>
+                                    <label for="meditation" class="text-gray-700 font-medium flex items-center">
+                                        <i class="fas fa-om text-indigo-500 mr-2"></i>
+                                        Méditation pleine conscience
+                                    </label>
+                                </div>
+                                <div id="meditation-details" class="pl-4 border-l-2 border-indigo-200 hidden">
+                                    <select name="meditation-frequency" class="w-full px-3 py-2 hand-drawn-input focus:outline-none focus:ring-2 focus:ring-green-500 mb-2">
+                                        <option value="">Fréquence souhaitée</option>
+                                        <option value="trimestre">Une fois par trimestre</option>
+                                    <option value="semestre">Une fois par semestre</option>
+                                    <option value="annuel">Une fois par an</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <!-- Gestion du stress -->
+                            <div class="mb-4 transform hover:scale-105 transition-transform duration-300">
+                                <div class="flex items-center mb-2">
+                                    <input type="checkbox" id="stress" name="other-workshops" value="stress" class="opacity-0 absolute h-8 w-8">
+                                    <div class="hand-drawn-checkbox w-5 h-5 bg-white flex items-center justify-center mr-2">
+                                        <i class="fas fa-check text-green-600 text-xs hidden checked-box"></i>
+                                    </div>
+                                    <label for="stress" class="text-gray-700 font-medium flex items-center">
+                                        <i class="fas fa-wind text-blue-500 mr-2"></i>
+                                        Gestion du stress
+                                    </label>
+                                </div>
+                                <div id="stress-details" class="pl-4 border-l-2 border-blue-200 hidden">
+                                    <select name="stress-frequency" class="w-full px-3 py-2 hand-drawn-input focus:outline-none focus:ring-2 focus:ring-green-500 mb-2">
+                                        <option value="">Fréquence souhaitée</option>
+                                        <option value="trimestre">Une fois par trimestre</option>
+                                    <option value="semestre">Une fois par semestre</option>
+                                    <option value="annuel">Une fois par an</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <!-- Ergonomie au poste de travail -->
+                            <div class="mb-4 transform hover:scale-105 transition-transform duration-300">
+                                <div class="flex items-center mb-2">
+                                    <input type="checkbox" id="ergonomics" name="other-workshops" value="ergonomics" class="opacity-0 absolute h-8 w-8">
+                                    <div class="hand-drawn-checkbox w-5 h-5 bg-white flex items-center justify-center mr-2">
+                                        <i class="fas fa-check text-green-600 text-xs hidden checked-box"></i>
+                                    </div>
+                                    <label for="ergonomics" class="text-gray-700 font-medium flex items-center">
+                                        <i class="fas fa-chair text-orange-500 mr-2"></i>
+                                        Ergonomie au poste de travail
+                                    </label>
+                                </div>
+                                <div id="ergonomics-details" class="pl-4 border-l-2 border-orange-200 hidden">
+                                    <select name="ergonomics-frequency" class="w-full px-3 py-2 hand-drawn-input focus:outline-none focus:ring-2 focus:ring-green-500 mb-2">
+                                        <option value="">Fréquence souhaitée</option>
+                                        <option value="trimestre">Une fois par trimestre</option>
+                                    <option value="semestre">Une fois par semestre</option>
+                                    <option value="annuel">Une fois par an</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <!-- Art-thérapie -->
+                            <div class="mb-4 transform hover:scale-105 transition-transform duration-300">
+                                <div class="flex items-center mb-2">
+                                    <input type="checkbox" id="art-therapy" name="other-workshops" value="art-therapy" class="opacity-0 absolute h-8 w-8">
+                                    <div class="hand-drawn-checkbox w-5 h-5 bg-white flex items-center justify-center mr-2">
+                                        <i class="fas fa-check text-green-600 text-xs hidden checked-box"></i>
+                                    </div>
+                                    <label for="art-therapy" class="text-gray-700 font-medium flex items-center">
+                                        <i class="fas fa-palette text-purple-500 mr-2"></i>
+                                        Art-thérapie (dessin, peinture...)
+                                    </label>
+                                </div>
+                                <div id="art-therapy-details" class="pl-4 border-l-2 border-purple-200 hidden">
+                                    <select name="art-therapy-frequency" class="w-full px-3 py-2 hand-drawn-input focus:outline-none focus:ring-2 focus:ring-green-500 mb-2">
+                                        <option value="">Fréquence souhaitée</option>
+                                       <option value="trimestre">Une fois par trimestre</option>
+                                    <option value="semestre">Une fois par semestre</option>
+                                    <option value="annuel">Une fois par an</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <!-- Sommeil et récupération -->
+                            <div class="mb-4 transform hover:scale-105 transition-transform duration-300">
+                                <div class="flex items-center mb-2">
+                                    <input type="checkbox" id="sleep" name="other-workshops" value="sleep" class="opacity-0 absolute h-8 w-8">
+                                    <div class="hand-drawn-checkbox w-5 h-5 bg-white flex items-center justify-center mr-2">
+                                        <i class="fas fa-check text-green-600 text-xs hidden checked-box"></i>
+                                    </div>
+                                    <label for="sleep" class="text-gray-700 font-medium flex items-center">
+                                        <i class="fas fa-moon text-indigo-400 mr-2"></i>
+                                        Sommeil et récupération
+                                    </label>
+                                </div>
+                                <div id="sleep-details" class="pl-4 border-l-2 border-indigo-200 hidden">
+                                    <select name="sleep-frequency" class="w-full px-3 py-2 hand-drawn-input focus:outline-none focus:ring-2 focus:ring-green-500 mb-2">
+                                        <option value="">Fréquence souhaitée</option>
+                                       <option value="trimestre">Une fois par trimestre</option>
+                                    <option value="semestre">Une fois par semestre</option>
+                                    <option value="annuel">Une fois par an</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <!-- Équilibre vie pro/perso -->
+                            <div class="mb-4 transform hover:scale-105 transition-transform duration-300">
+                                <div class="flex items-center mb-2">
+                                    <input type="checkbox" id="work-life" name="other-workshops" value="work-life" class="opacity-0 absolute h-8 w-8">
+                                    <div class="hand-drawn-checkbox w-5 h-5 bg-white flex items-center justify-center mr-2">
+                                        <i class="fas fa-check text-green-600 text-xs hidden checked-box"></i>
+                                    </div>
+                                    <label for="work-life" class="text-gray-700 font-medium flex items-center">
+                                        <i class="fas fa-balance-scale text-teal-500 mr-2"></i>
+                                        Équilibre vie professionnelle/personnelle
+                                    </label>
+                                </div>
+                                <div id="work-life-details" class="pl-4 border-l-2 border-teal-200 hidden">
+                                    <select name="work-life-frequency" class="w-full px-3 py-2 hand-drawn-input focus:outline-none focus:ring-2 focus:ring-green-500 mb-2">
+                                        <option value="">Fréquence souhaitée</option>
+                                       <option value="trimestre">Une fois par trimestre</option>
+                                    <option value="semestre">Une fois par semestre</option>
+                                    <option value="annuel">Une fois par an</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-4 ml-16">
+                            <p class="text-sm text-gray-600 mb-2">Avez-vous d'autres suggestions d'ateliers bien-être ?</p>
+                            <textarea name="other-workshop-suggestions" rows="2" class="w-full px-3 py-2 hand-drawn-input focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="Décrivez vos idées d'ateliers..."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Commentaires supplémentaires -->
+                    <div class="mb-8 fade-in">
+    <div class="flex items-center mb-4">
+        <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mr-4 hand-drawn section-icon">
+            <i class="fas fa-comment-dots text-green-600 text-xl"></i>
+        </div>
+        <h2 class="text-xl font-semibold text-gray-800">Commentaires supplémentaires</h2>
+    </div>
+    <textarea name="additional-comments"
+        rows="3"
+        class="w-[95%] px-3 py-2 hand-drawn-input focus:outline-none focus:ring-2 focus:ring-green-500 ml-0"
+        placeholder="Avez-vous d'autres commentaires à partager ?"></textarea>
+</div>
+
+
+                    <!-- Bouton de soumission -->
+                    <div class="flex justify-center">
+                        <button type="submit" class="px-6 py-3 bg-green-500 text-white font-medium hand-drawn-button hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-all transform hover:scale-105">
+                            <i class="fas fa-paper-plane mr-2"></i> Soumettre mes réponses
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Message de confirmation (caché par défaut) -->
+                <div id="confirmation" class="hidden p-6 text-center">
+                    <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-green-100 text-green-500 mb-4 hand-drawn animate__animated animate__bounceIn">
+                        <i class="fas fa-check-circle text-3xl"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold text-gray-800 mb-2 animate__animated animate__fadeInUp">Merci pour vos réponses !</h2>
+                    <p class="text-gray-600 mb-6 animate__animated animate__fadeInUp animate__delay-1s">Vos préférences ont été enregistrées avec succès. Nous vous tiendrons informé(e) des ateliers qui seront mis en place.</p>
+                    <!--<button id="reset-form" class="px-4 py-2 bg-green-500 text-white font-medium hand-drawn-button hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-all transform hover:scale-105 animate__animated animate__fadeInUp animate__delay-2s">
+                        <i class="fas fa-redo mr-2"></i> Remplir à nouveau
+                    </button>-->
+                </div>
+            </div>
+            
+            <div class="mt-4 text-center text-sm text-gray-500">
+                <p>Ce questionnaire est confidentiel et vos réponses seront utilisées uniquement pour améliorer votre bien-être au travail.</p>
+                <div class="flex justify-center mt-2 space-x-2">
+                    <i class="fas fa-heart text-red-400 animate__animated animate__heartBeat animate__infinite"></i>
+                    <i class="fas fa-spa text-green-400"></i>
+                    <i class="fas fa-peace text-blue-400"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Fonction pour gérer l'option anonyme
+        function toggleAnonymous() {
+            const nameField = document.getElementById('name');
+            const isAnonymous = document.getElementById('anonymous').checked;
+            
+            if (isAnonymous) {
+                nameField.value = "Anonyme";
+                nameField.disabled = true;
+                document.querySelector('label[for="anonymous"] + .hand-drawn-checkbox .checked-box').classList.remove('hidden');
+            } else {
+                nameField.value = "";
+                nameField.disabled = false;
+                document.querySelector('label[for="anonymous"] + .hand-drawn-checkbox .checked-box').classList.add('hidden');
+            }
+        }
+        
+        // Fonction pour afficher/masquer les détails en fonction de l'intérêt
+        function toggleSection(section) {
+            const interest = document.querySelector(`input[name="${section}-interest"]:checked`).value;
+            const detailsSection = document.getElementById(`${section}-details`);
+            
+            if (interest === 'oui') {
+                detailsSection.classList.remove('hidden');
+                detailsSection.classList.add('animate__animated', 'animate__fadeIn');
+            } else {
+                detailsSection.classList.add('hidden');
+            }
+            
+            updateProgressBar();
+        }
+        
+        // Mise à jour de la barre de progression
+        function updateProgressBar() {
+            const form = document.getElementById('wellness-form');
+            const totalQuestions = 5; // Nombre de sections principales (QVCT + 4 ateliers)
+            let answeredQuestions = 0;
+            
+            // Vérifier la section QVCT
+            const qvctRadios = document.querySelectorAll('input[name="qvct-satisfaction"]:checked');
+            if (qvctRadios.length > 0) {
+                answeredQuestions++;
+            }
+            
+            // Vérifier chaque section d'atelier
+            ['sport', 'nutrition', 'massage', 'sophrology'].forEach(section => {
+                const interestRadios = document.querySelectorAll(`input[name="${section}-interest"]:checked`);
+                if (interestRadios.length > 0) {
+                    answeredQuestions++;
+                }
+            });
+            
+            const progressPercentage = Math.round((answeredQuestions / totalQuestions) * 100);
+            document.getElementById('progress-bar').style.width = `${progressPercentage}%`;
+            document.getElementById('progress-text').textContent = `${progressPercentage}% complété`;
+        }
+        
+        // Gestion des options mutuellement exclusives (Non vs checkboxes)
+        document.addEventListener('DOMContentLoaded', function() {
+            // Gestion des radios et checkboxes personnalisés
+            document.querySelectorAll('input[type="radio"]').forEach(radio => {
+                radio.addEventListener('change', function() {
+                    // Masquer tous les indicateurs de ce groupe
+                    const name = this.getAttribute('name');
+                    document.querySelectorAll(`input[name="${name}"] + div .checked-radio`).forEach(el => {
+                        el.classList.add('hidden');
+                    });
+                    
+                    // Afficher l'indicateur pour ce radio
+                    if (this.checked) {
+                        this.nextElementSibling.querySelector('.checked-radio').classList.remove('hidden');
+                    }
+                });
+            });
+            
+            document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    const checkIcon = this.nextElementSibling.querySelector('.checked-box');
+                    if (this.checked) {
+                        checkIcon.classList.remove('hidden');
+                    } else {
+                        checkIcon.classList.add('hidden');
+                    }
+                });
+            });
+            
+            const sections = ['sport', 'nutrition', 'massage', 'sophrology'];
+            
+            sections.forEach(section => {
+                // Quand "Non" est sélectionné, désactiver les checkboxes
+                const radioNon = document.querySelector(`input[name="${section}-outside-hours"][value="non"]`);
+                const checkboxLunch = document.querySelector(`input[name="${section}-time-lunch"]`);
+                const checkboxEvening = document.querySelector(`input[name="${section}-time-evening"]`);
+                
+                if (radioNon && checkboxLunch && checkboxEvening) {
+                    radioNon.addEventListener('change', function() {
+                        if (this.checked) {
+                            checkboxLunch.checked = false;
+                            checkboxEvening.checked = false;
+                            checkboxLunch.disabled = true;
+                            checkboxEvening.disabled = true;
+                            
+                            // Masquer les icônes de check
+                            checkboxLunch.nextElementSibling.querySelector('.checked-box').classList.add('hidden');
+                            checkboxEvening.nextElementSibling.querySelector('.checked-box').classList.add('hidden');
+                        } else {
+                            checkboxLunch.disabled = false;
+                            checkboxEvening.disabled = false;
+                        }
+                    });
+                    
+                    // Quand une checkbox est cochée, désélectionner "Non"
+                    [checkboxLunch, checkboxEvening].forEach(checkbox => {
+                        checkbox.addEventListener('change', function() {
+                            if (this.checked) {
+                                radioNon.checked = false;
+                                radioNon.nextElementSibling.querySelector('.checked-radio').classList.add('hidden');
+                            }
+                            // Si les deux checkboxes sont décochées, cocher "Non" automatiquement
+                            if (!checkboxLunch.checked && !checkboxEvening.checked) {
+                                radioNon.checked = true;
+                                radioNon.nextElementSibling.querySelector('.checked-radio').classList.remove('hidden');
+                                checkboxLunch.disabled = true;
+                                checkboxEvening.disabled = true;
+                            }
+                        });
+                    });
+                }
+            });
+            
+            // Gestion des autres ateliers
+            const otherWorkshops = ['meditation', 'stress', 'ergonomics', 'art-therapy', 'sleep', 'work-life'];
+            otherWorkshops.forEach(workshop => {
+                const checkbox = document.getElementById(workshop);
+                const detailsSection = document.getElementById(`${workshop}-details`);
+                
+                checkbox.addEventListener('change', function() {
+                    if (this.checked) {
+                        detailsSection.classList.remove('hidden');
+                        detailsSection.classList.add('animate__animated', 'animate__fadeIn');
+                    } else {
+                        detailsSection.classList.add('hidden');
+                    }
+                });
+            });
+            
+            // Initialiser les événements pour la section QVCT
+            const qvctRadios = document.querySelectorAll('input[name="qvct-satisfaction"]');
+            qvctRadios.forEach(radio => {
+                radio.addEventListener('change', updateProgressBar);
+            });
+            
+            // Gestion du champ "Autre" pour l'activité
+            const activitySelect = document.getElementById('activity');
+            const otherActivityContainer = document.getElementById('other-activity-container');
+            
+            activitySelect.addEventListener('change', function() {
+                if (this.value === 'autre') {
+                    otherActivityContainer.style.display = 'block';
+                    otherActivityContainer.classList.add('animate__animated', 'animate__fadeIn');
+                } else {
+                    otherActivityContainer.style.display = 'none';
+                }
+            });
+            
+            // Animation des sections au scroll
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate__animated', 'animate__fadeInUp');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            document.querySelectorAll('.question-section').forEach(section => {
+                observer.observe(section);
+            });
+        });
+        
+        // Gestion de la soumission du formulaire
+        
+        
+        // Réinitialiser le formulaire
+        document.getElementById('reset-form').addEventListener('click', function() {
+            document.getElementById('wellness-form').reset();
+            document.getElementById('wellness-form').classList.remove('hidden');
+            document.getElementById('confirmation').classList.add('hidden');
+            
+            // Masquer tous les détails
+            document.querySelectorAll('[id$="-details"]').forEach(el => {
+                el.classList.add('hidden');
+            });
+            
+            // Réinitialiser la barre de progression
+            document.getElementById('progress-bar').style.width = '0%';
+            document.getElementById('progress-text').textContent = '0% complété';
+            
+            // Réinitialiser le champ nom si anonyme était coché
+            document.getElementById('name').disabled = false;
+            document.getElementById('name').value = "";
+            
+            // Réactiver les checkboxes de temps
+            const sections = ['sport', 'nutrition', 'massage', 'sophrology'];
+            sections.forEach(section => {
+                const checkboxLunch = document.querySelector(`input[name="${section}-time-lunch"]`);
+                const checkboxEvening = document.querySelector(`input[name="${section}-time-evening"]`);
+                if (checkboxLunch && checkboxEvening) {
+                    checkboxLunch.disabled = false;
+                    checkboxEvening.disabled = false;
+                }
+            });
+            
+            // Masquer le champ "Autre" pour l'activité
+            document.getElementById('other-activity-container').style.display = 'none';
+            
+            // Réinitialiser tous les indicateurs visuels des checkboxes et radios
+            document.querySelectorAll('.checked-radio, .checked-box').forEach(el => {
+                el.classList.add('hidden');
+            });
+        });
+    </script>
+<script type="module" src="qvct-form-save.js"></script>
+
+    </body>
+</html>

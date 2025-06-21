@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard QVCT - Analyse complète</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body { font-family: 'Comic Neue', cursive; background: #f8f9fa; }
+    .hand-drawn { border: 2px solid #333; border-radius: 25px; box-shadow: 5px 5px 0px rgba(0,0,0,0.05);}
+    th, td { font-size: 0.96rem; }
+    .stat-card { min-width: 180px; }
+.canvas-circle {
+  max-width: 320px !important;
+  max-height: 320px !important;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+/* Pour les barres, on laisse la taille responsive */
+.canvas-bar {
+  width: 100% !important;
+  max-width: 700px;
+  min-height: 250px;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+  </style>
+</head>
+<body>
+  <div class="max-w-7xl mx-auto mt-10 p-4">
+    <h1 class="text-3xl font-bold text-green-800 mb-2">Dashboard QVCT</h1>
+    <p class="mb-6 text-gray-600">Analyse complète des réponses au questionnaire bien-être.</p>
+
+    <!-- Cartes statistiques -->
+    <div id="stats" class="flex flex-wrap gap-4 mb-8"></div>
+
+    <!-- Graphiques -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+      <div class="bg-white p-4 hand-drawn">
+        <h2 class="font-semibold text-lg mb-2">Répartition par Sexe</h2>
+        <canvas id="sexeChart" class="canvas-circle"></canvas>
+      </div>
+      <div class="bg-white p-4 hand-drawn">
+        <h2 class="font-semibold text-lg mb-2">Répartition par Activité</h2>
+        <canvas id="activiteChart" class="canvas-circle"></canvas>
+      </div>
+      <div class="bg-white p-4 hand-drawn">
+        <h2 class="font-semibold text-lg mb-2">Répartition par Opération</h2>
+        <canvas id="operationChart" class="canvas-bar"></canvas>
+      </div>
+      <div class="bg-white p-4 hand-drawn">
+        <h2 class="font-semibold text-lg mb-2">Sport : Intérêt & Fréquence</h2>
+        <canvas id="sportChart" class="canvas-bar"></canvas>
+      </div>
+      <div class="bg-white p-4 hand-drawn">
+        <h2 class="font-semibold text-lg mb-2">Sport sur Temps de Travail</h2>
+        <canvas id="sportTravailChart" class="canvas-circle"></canvas>
+      </div>
+
+      <div class="bg-white p-4 hand-drawn">
+        <h2 class="font-semibold text-lg mb-2">Nutrition : Intérêt & Fréquence</h2>
+        <canvas id="nutritionChart" class="canvas-bar"></canvas>
+      </div>
+      <div class="bg-white p-4 hand-drawn">
+        <h2 class="font-semibold text-lg mb-2">Massage : Intérêt & Fréquence</h2>
+        <canvas id="massageChart" class="canvas-bar"></canvas>
+      </div>
+      <div class="bg-white p-4 hand-drawn">
+        <h2 class="font-semibold text-lg mb-2">Sophrologie : Intérêt & Fréquence</h2>
+        <canvas id="sophroChart" class="canvas-bar"></canvas>
+      </div>
+    </div>
+
+    <div class="mb-3 flex items-center gap-2">
+      <button id="export-csv" class="px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700"><i class="fas fa-file-csv mr-2"></i>Exporter CSV</button>
+      <span id="loader" class="text-green-700 hidden ml-2"><i class="fas fa-spinner fa-spin"></i> Chargement...</span>
+    </div>
+
+<button id="show-comments" class="px-3 py-1 bg-indigo-600 text-white rounded hover:bg-indigo-700 mb-4">
+  <i class="fas fa-comments mr-2"></i>Voir tous les commentaires
+</button>
+<div id="comments-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+  <div class="bg-white rounded-lg p-6 max-w-3xl w-full overflow-y-auto max-h-[80vh] relative">
+    <button id="close-comments" class="absolute top-3 right-3 text-gray-500 hover:text-red-600 text-xl">&times;</button>
+    <h2 class="text-2xl font-bold mb-4">Tous les commentaires</h2>
+    <div id="all-comments"></div>
+  </div>
+</div>
+
+<div class="overflow-x-auto hand-drawn bg-white p-2">
+  <table class="min-w-full table-auto" id="responses-table">
+    <thead>
+      <tr class="bg-green-100">
+        <th class="p-2">Date</th>
+        <th class="p-2">Nom</th>
+        <th class="p-2">Service</th>
+        <th class="p-2">Identité</th>
+        <th class="p-2">Activité</th>
+        <th class="p-2">Satisfaction QVCT</th>
+        <th class="p-2">Atelier Sport</th>
+        <th class="p-2">Atelier Nutrition</th>
+        <th class="p-2">Atelier Massage</th>
+        <th class="p-2">Sophrologie</th>
+        <th class="p-2">Autres ateliers</th>
+        <th class="p-2">Apprécié QVCT</th>
+        <th class="p-2">À améliorer QVCT</th>
+        <th class="p-2">Sport - Types souhaités</th>
+        <th class="p-2">Nutrition - Sujets</th>
+        <th class="p-2">Massage - Types</th>
+        <th class="p-2">Sophro - Objectifs</th>
+        <th class="p-2">Autres ateliers suggérés</th>
+        <th class="p-2">Commentaires libres</th>
+      </tr>
+    </thead>
+    <tbody id="responses-body"></tbody>
+  </table>
+</
+
+
+  <!-- Firebase + Chart.js -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBHKKxPs7QPBVceajWSHLma5XSxGpl_Q6w",
+      authDomain: "qvct-manager-app.firebaseapp.com",
+      projectId: "qvct-manager-app",
+      storageBucket: "qvct-manager-app.appspot.com",
+      messagingSenderId: "349381960575",
+      appId: "1:349381960575:web:eed97ccbecd4cd77b3704a"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const tbody = document.getElementById('responses-body');
+    const loader = document.getElementById('loader');
+    const statsDiv = document.getElementById('stats');
+
+    // Prépare les datasets
+    const sexes = ["homme", "femme", "autre", "ne-pas-preciser"];
+    const activites = ["Téléconseiller", "Management opérationnel", "Ressources Humaines", "Support"];
+    const operations = ["Support", "RH", "AG2R", "UCPA", "CNAV", "Abeille", "IRP Auto", "Engie DCP", "EHS", "Enedis"];
+
+    // Fréquences personnalisées par atelier
+    const sportFrequencies = ["hebdomadaire", "bi-mensuel", "mensuel"];
+    const nutritionFrequencies = ["trimestre", "semestre", "annuel"];
+    const massageFrequencies = ["trimestre", "semestre", "annuel"];
+    const sophroFrequencies = ["trimestre", "semestre", "annuel"];
+
+    // Graphs (scope globale pour update)
+    let sexeChart, activiteChart, operationChart, sportChart, sportTravailChart,
+        nutritionChart, massageChart, sophroChart;
+
+    async function loadResponses() {
+      loader.classList.remove('hidden');
+      tbody.innerHTML = "";
+      const responses = [];
+      let countSatisfait = 0, countSport = 0, countNutrition = 0, countMassage = 0, countSophro = 0;
+
+      // Stats et fréquences
+      const sexeStats = Object.fromEntries(sexes.map(s => [s, 0]));
+      const activiteStats = Object.fromEntries(activites.map(a => [a, 0]));
+      const operationStats = Object.fromEntries(operations.map(o => [o, 0]));
+
+      const sportStats = { "oui": 0, "non": 0 };
+      const sportFreqStats = Object.fromEntries(sportFrequencies.map(f => [f, 0]));
+      const sportTravailStats = { "oui": 0, "non": 0 };
+
+      const nutritionStats = { "oui": 0, "non": 0 };
+      const nutritionFreqStats = Object.fromEntries(nutritionFrequencies.map(f => [f, 0]));
+
+      const massageStats = { "oui": 0, "non": 0 };
+      const massageFreqStats = Object.fromEntries(massageFrequencies.map(f => [f, 0]));
+
+      const sophroStats = { "oui": 0, "non": 0 };
+      const sophroFreqStats = Object.fromEntries(sophroFrequencies.map(f => [f, 0]));
+
+      const q = query(collection(db, "reponses-qvct"), orderBy("date", "desc"));
+      const snapshot = await getDocs(q);
+
+      let countSurTempsTravail = 0;
+      let countHorsTempsTravail = 0;
+      snapshot.forEach(doc => {
+        const d = doc.data();
+        if (d["sport-outside-hours"] === "non") countSurTempsTravail++;
+        else countHorsTempsTravail++;
+      });
+        
+      snapshot.forEach(doc => {
+        const d = doc.data();
+        responses.push(d);
+
+        // Statistiques globales
+        if (d['qvct-satisfaction'] && (d['qvct-satisfaction'] === 'satisfait' || d['qvct-satisfaction'] === 'très-satisfait')) countSatisfait++;
+        if (d['sport-interest'] === 'oui') countSport++;
+        if (d['nutrition-interest'] === 'oui') countNutrition++;
+        if (d['massage-interest'] === 'oui') countMassage++;
+        if (d['sophrology-interest'] === 'oui') countSophro++;
+
+        // Sexe
+        if (d.identity && sexeStats[d.identity] !== undefined) sexeStats[d.identity]++;
+        // Activité
+        if (d.activity && activiteStats[d.activity] !== undefined) activiteStats[d.activity]++;
+        // Opération
+        if (d.department && operationStats[d.department] !== undefined) operationStats[d.department]++;
+
+        // Sport
+        if (d['sport-interest']) sportStats[d['sport-interest']] = (sportStats[d['sport-interest']] || 0) + 1;
+        if (d['sport-frequency']) sportFreqStats[d['sport-frequency']] = (sportFreqStats[d['sport-frequency']] || 0) + 1;
+        if (d['sport-travail']) sportTravailStats[d['sport-travail']] = (sportTravailStats[d['sport-travail']] || 0) + 1;
+
+        // Nutrition
+        if (d['nutrition-interest']) nutritionStats[d['nutrition-interest']] = (nutritionStats[d['nutrition-interest']] || 0) + 1;
+        if (d['nutrition-frequency']) nutritionFreqStats[d['nutrition-frequency']] = (nutritionFreqStats[d['nutrition-frequency']] || 0) + 1;
+
+        // Massage
+        if (d['massage-interest']) massageStats[d['massage-interest']] = (massageStats[d['massage-interest']] || 0) + 1;
+        if (d['massage-frequency']) massageFreqStats[d['massage-frequency']] = (massageFreqStats[d['massage-frequency']] || 0) + 1;
+
+        // Sophrologie
+        if (d['sophrology-interest']) sophroStats[d['sophrology-interest']] = (sophroStats[d['sophrology-interest']] || 0) + 1;
+        if (d['sophrology-frequency']) sophroFreqStats[d['sophrology-frequency']] = (sophroFreqStats[d['sophrology-frequency']] || 0) + 1;
+      });
+
+      // Affiche stats
+      statsDiv.innerHTML = `
+        <div class="stat-card bg-green-100 p-4 rounded shadow"><span class="text-2xl font-bold">${responses.length}</span><br><span class="text-green-900">Réponses totales</span></div>
+        <div class="stat-card bg-blue-100 p-4 rounded shadow"><span class="text-2xl font-bold">${countSatisfait}</span><br><span class="text-blue-900">Satisfait(e)s QVCT</span></div>
+        <div class="stat-card bg-red-100 p-4 rounded shadow"><span class="text-2xl font-bold">${countSport}</span><br><span class="text-red-900">Intéressé(e)s Sport</span></div>
+        <div class="stat-card bg-yellow-100 p-4 rounded shadow"><span class="text-2xl font-bold">${countNutrition}</span><br><span class="text-yellow-900">Intéressé(e)s Nutrition</span></div>
+        <div class="stat-card bg-pink-100 p-4 rounded shadow"><span class="text-2xl font-bold">${countMassage}</span><br><span class="text-pink-900">Intéressé(e)s Massage</span></div>
+        <div class="stat-card bg-indigo-100 p-4 rounded shadow"><span class="text-2xl font-bold">${countSophro}</span><br><span class="text-indigo-900">Intéressé(e)s Sophrologie</span></div>
+      `;
+
+      // Affiche le tableau
+for (const d of responses) {
+  tbody.innerHTML += `
+    <tr class="border-b">
+      <td class="p-2">${d.date ? new Date(d.date).toLocaleDateString() : ''}</td>
+      <td class="p-2">${d.name || ''}</td>
+      <td class="p-2">${d.department || ''}</td>
+      <td class="p-2">${d.identity || ''}</td>
+      <td class="p-2">${d.activity || ''}</td>
+      <td class="p-2">${d['qvct-satisfaction'] || ''}</td>
+      <td class="p-2">${d['sport-interest'] || ''}${d['sport-frequency'] ? `<br><span class="text-xs text-gray-400">${d['sport-frequency']}</span>` : ''}</td>
+      <td class="p-2">${d['nutrition-interest'] || ''}${d['nutrition-frequency'] ? `<br><span class="text-xs text-gray-400">${d['nutrition-frequency']}</span>` : ''}</td>
+      <td class="p-2">${d['massage-interest'] || ''}${d['massage-frequency'] ? `<br><span class="text-xs text-gray-400">${d['massage-frequency']}</span>` : ''}</td>
+      <td class="p-2">${d['sophrology-interest'] || ''}${d['sophrology-frequency'] ? `<br><span class="text-xs text-gray-400">${d['sophrology-frequency']}</span>` : ''}</td>
+      <td class="p-2">${(Array.isArray(d['other-workshops']) ? d['other-workshops'].join(', ') : (d['other-workshops']||''))}</td>
+      <td class="p-2">${d['qvct-liked'] || ''}</td>
+      <td class="p-2">${d['qvct-improvement'] || ''}</td>
+      <td class="p-2">${d['sport-types'] || ''}</td>
+      <td class="p-2">${d['nutrition-topics'] || ''}</td>
+      <td class="p-2">${d['massage-types'] || ''}</td>
+      <td class="p-2">${d['sophrology-goals'] || ''}</td>
+      <td class="p-2">${d['other-workshop-suggestions'] || ''}</td>
+      <td class="p-2">${d['additional-comments'] || ''}</td>
+    </tr>
+  `;
+}
+
+
+      // --- CHARTS ---
+      if (sexeChart) sexeChart.destroy();
+      sexeChart = new Chart(document.getElementById('sexeChart'), {
+        type: 'pie',
+        data: {
+          labels: ['Homme', 'Femme', 'Autre', 'Ne pas préciser'],
+          datasets: [{ data: sexes.map(s => sexeStats[s]), backgroundColor: ['#9ED2C6','#F2B5D4','#BDE0FE','#F7B267','#B7B7A4']}]
+        }
+      });
+
+      if (activiteChart) activiteChart.destroy();
+      activiteChart = new Chart(document.getElementById('activiteChart'), {
+        type: 'doughnut',
+        data: {
+          labels: activites,
+          datasets: [{ data: activites.map(a => activiteStats[a]), backgroundColor: ['#7ED957','#FFD6A5','#9ED2C6','#B5B2FF'] }]
+        }
+      });
+
+      if (operationChart) operationChart.destroy();
+      operationChart = new Chart(document.getElementById('operationChart'), {
+        type: 'bar',
+        data: {
+          labels: operations,
+          datasets: [{ label: "Répartition Opérations", data: operations.map(o => operationStats[o]), backgroundColor: '#60A5FA' }]
+        }
+      });
+
+      // SPORT: intérêt & fréquence
+      if (sportChart) sportChart.destroy();
+      sportChart = new Chart(document.getElementById('sportChart'), {
+        type: 'bar',
+        data: {
+          labels: ["Intéressé(e)", "Pas intéressé(e)", "Hebdomadaire", "Bi-mensuel", "Mensuel"],
+          datasets: [{
+            label: "Réponses",
+            data: [
+              sportStats["oui"], sportStats["non"],
+              sportFreqStats["hebdomadaire"], sportFreqStats["bi-mensuel"], sportFreqStats["mensuel"]
+            ],
+            backgroundColor: ['#9ED2C6','#F7B267','#FFD6A5','#A3C9A8','#F2B5D4']
+          }]
+        }
+      });
+
+if (sportTravailChart) sportTravailChart.destroy();
+sportTravailChart = new Chart(document.getElementById('sportTravailChart'), {
+  type: 'pie',
+  data: {
+    labels: ["Oui, sur temps de travail", "OK hors temps de travail"],
+    datasets: [{
+      data: [countSurTempsTravail, countHorsTempsTravail],
+      backgroundColor: ['#7ED957','#FFD6A5']
+    }]
+  }
+});
+
+
+      // NUTRITION
+      if (nutritionChart) nutritionChart.destroy();
+      nutritionChart = new Chart(document.getElementById('nutritionChart'), {
+        type: 'bar',
+        data: {
+          labels: ["Intéressé(e)", "Pas intéressé(e)", "Mois", "Semestre", "Annuel"],
+          datasets: [{
+            label: "Réponses",
+            data: [
+              nutritionStats["oui"], nutritionStats["non"],
+              nutritionFreqStats["trimestre"], nutritionFreqStats["semestre"], nutritionFreqStats["annuel"]
+            ],
+            backgroundColor: ['#7ED957','#FFD6A5','#B5B2FF','#9ED2C6','#BDE0FE']
+          }]
+        }
+      });
+
+      // MASSAGE
+      if (massageChart) massageChart.destroy();
+      massageChart = new Chart(document.getElementById('massageChart'), {
+        type: 'bar',
+        data: {
+          labels: ["Intéressé(e)", "Pas intéressé(e)", "Mois", "Semestre", "Annuel"],
+          datasets: [{
+            label: "Réponses",
+            data: [
+              massageStats["oui"], massageStats["non"],
+              massageFreqStats["trimestre"], massageFreqStats["semestre"], massageFreqStats["annuel"]
+            ],
+            backgroundColor: ['#F2B5D4','#A3C9A8','#FFD6A5','#B5B2FF','#9ED2C6']
+          }]
+        }
+      });
+
+      // SOPHRO
+      if (sophroChart) sophroChart.destroy();
+      sophroChart = new Chart(document.getElementById('sophroChart'), {
+        type: 'bar',
+        data: {
+          labels: ["Intéressé(e)", "Pas intéressé(e)", "Mois", "Semestre", "Annuel"],
+          datasets: [{
+            label: "Réponses",
+            data: [
+              sophroStats["oui"], sophroStats["non"],
+              sophroFreqStats["trimestre"], sophroFreqStats["semestre"], sophroFreqStats["annuel"]
+            ],
+            backgroundColor: ['#BDE0FE','#FFD6A5','#B5B2FF','#F2B5D4','#9ED2C6']
+          }]
+        }
+      });
+
+      loader.classList.add('hidden');
+    }
+
+    // Export CSV
+    document.getElementById('export-csv').addEventListener('click', async () => {
+      const q = query(collection(db, "reponses-qvct"), orderBy("date", "desc"));
+      const snapshot = await getDocs(q);
+      const items = [];
+      snapshot.forEach(doc => items.push(doc.data()));
+
+      const csvHeaders = [
+  "date","name","department","identity","activity","qvct-satisfaction",
+  "sport-interest","sport-frequency","nutrition-interest","nutrition-frequency",
+  "massage-interest","massage-frequency","sophrology-interest","sophrology-frequency",
+  "other-workshops",
+  "qvct-liked","qvct-improvement","sport-types","nutrition-topics","massage-types","sophrology-goals","other-workshop-suggestions","additional-comments"
+];
+      const csvRows = [csvHeaders.join(",")];
+
+      for (const d of items) {
+        const row = csvHeaders.map(h =>
+          `"${((Array.isArray(d[h]) ? d[h].join('; ') : (d[h] ?? '')).toString()).replace(/"/g, '""')}"`
+        ).join(",");
+        csvRows.push(row);
+      }
+
+      const csv = csvRows.join("\n");
+      const blob = new Blob([csv], { type: "text/csv" });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = "reponses-qvct.csv";
+      link.click();
+    });
+
+    loadResponses();
+// --- Affichage commentaires détaillés ---
+const btnShowComments = document.getElementById('show-comments');
+const commentsModal = document.getElementById('comments-modal');
+const btnCloseComments = document.getElementById('close-comments');
+const allCommentsDiv = document.getElementById('all-comments');
+
+let lastResponses = []; // À garder global pour recharger à chaud si besoin
+
+btnShowComments.addEventListener('click', () => {
+  // Génère la liste
+  let html = "";
+  lastResponses.forEach((d, idx) => {
+    // On ne montre que les réponses où au moins un champ commentaire est rempli
+    const hasAny =
+      (d['qvct-liked'] && d['qvct-liked'].trim()) ||
+      (d['qvct-improvement'] && d['qvct-improvement'].trim()) ||
+      (d['sport-types'] && d['sport-types'].trim()) ||
+      (d['nutrition-topics'] && d['nutrition-topics'].trim()) ||
+      (d['massage-types'] && d['massage-types'].trim()) ||
+      (d['sophrology-goals'] && d['sophrology-goals'].trim()) ||
+      (d['other-workshop-suggestions'] && d['other-workshop-suggestions'].trim()) ||
+      (d['additional-comments'] && d['additional-comments'].trim());
+
+    if (hasAny) {
+      html += `
+        <div class="border-b py-4 mb-2">
+          <div class="text-sm text-gray-500 mb-1">Réponse du <b>${d.date ? new Date(d.date).toLocaleDateString() : "?"}</b>
+          — <span class="italic">${d.name || "Anonyme"}</span>
+          — <span class="text-green-700">${d.department || ""}</span>
+          </div>
+          ${d['qvct-liked'] ? `<div><b>Apprécié QVCT :</b> ${d['qvct-liked']}</div>` : ""}
+          ${d['qvct-improvement'] ? `<div><b>À améliorer QVCT :</b> ${d['qvct-improvement']}</div>` : ""}
+          ${d['sport-types'] ? `<div><b>Sport - types souhaités :</b> ${d['sport-types']}</div>` : ""}
+          ${d['nutrition-topics'] ? `<div><b>Nutrition - sujets :</b> ${d['nutrition-topics']}</div>` : ""}
+          ${d['massage-types'] ? `<div><b>Massage - types :</b> ${d['massage-types']}</div>` : ""}
+          ${d['sophrology-goals'] ? `<div><b>Sophro - objectifs :</b> ${d['sophrology-goals']}</div>` : ""}
+          ${d['other-workshop-suggestions'] ? `<div><b>Autres ateliers :</b> ${d['other-workshop-suggestions']}</div>` : ""}
+          ${d['additional-comments'] ? `<div><b>Commentaires libres :</b> ${d['additional-comments']}</div>` : ""}
+        </div>
+      `;
+    }
+  });
+  allCommentsDiv.innerHTML = html || "<div class='text-gray-500'>Aucun commentaire pour le moment.</div>";
+  commentsModal.classList.remove('hidden');
+});
+btnCloseComments.addEventListener('click', () => commentsModal.classList.add('hidden'));
+// Fermer le modal si clic sur le fond
+commentsModal.addEventListener('click', e => {
+  if (e.target === commentsModal) commentsModal.classList.add('hidden');
+});
+
+  </script>
+</body>
+</html>
