@@ -11,8 +11,24 @@
   <style>
     body { font-family: 'Comic Neue', cursive; background: #f8f9fa; }
     .hand-drawn { border: 2px solid #333; border-radius: 25px; box-shadow: 5px 5px 0px rgba(0,0,0,0.05);}
-    th, td { font-size: 0.96rem; }
-    .stat-card { min-width: 180px; }
+    th, td { font-size: 0.97rem; }
+    .stat-card {
+      min-width: 190px;
+      background: linear-gradient(100deg, #f0fff0 65%, #e6f0ff 100%);
+      border-radius: 2rem;
+      box-shadow: 0 6px 32px 0 rgba(45,125,66,0.08);
+      transition: box-shadow 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .stat-card:hover { box-shadow: 0 12px 40px 0 rgba(44,139,110,0.17); transform: translateY(-3px) scale(1.02);}
+    .stat-icon {
+      position: absolute;
+      right: 14px; top: 14px;
+      opacity: 0.12;
+      font-size: 3rem;
+      pointer-events: none;
+    }
     .canvas-circle {
       max-width: 320px !important;
       max-height: 320px !important;
@@ -29,15 +45,47 @@
       display: block;
     }
     .break-words { word-break: break-word; }
+    /* Pagination styles */
+    #pagination-controls button {
+      min-width: 38px;
+      min-height: 38px;
+      border-radius: 100vw;
+      font-weight: 600;
+      border: none;
+      margin: 0 2px;
+      background: #eee;
+      color: #205141;
+      transition: background .16s, color .16s, box-shadow .16s;
+      box-shadow: 0 1px 2px 0 rgba(0,0,0,.05);
+      cursor: pointer;
+    }
+    #pagination-controls button.selected, #pagination-controls button:active {
+      background: linear-gradient(100deg, #9ed2c6 40%, #5ec7b7 100%);
+      color: #fff;
+    }
+    #pagination-controls button:disabled {
+      background: #f3f3f3;
+      color: #bbb;
+      cursor: not-allowed;
+    }
+    #pagination-controls { justify-content: center; }
+    @media (max-width: 800px) {
+      .stat-card { min-width: 140px; font-size: 0.95rem;}
+      .canvas-bar, .canvas-circle { max-width: 98vw !important;}
+      th, td { font-size: 0.90rem; }
+    }
   </style>
 </head>
 <body>
   <div class="max-w-7xl mx-auto mt-10 p-4">
-    <h1 class="text-3xl font-bold text-green-800 mb-2">Dashboard QVCT</h1>
+    <h1 class="text-3xl md:text-4xl font-extrabold text-green-800 mb-2 tracking-tight flex items-center gap-3">
+      <i class="fa-solid fa-spa text-green-500"></i>
+      Dashboard QVCT
+    </h1>
     <p class="mb-6 text-gray-600">Analyse complète des réponses au questionnaire bien-être.</p>
 
     <!-- Cartes statistiques -->
-    <div id="stats" class="flex flex-wrap gap-4 mb-8"></div>
+    <div id="stats" class="flex flex-wrap gap-6 mb-10"></div>
 
     <!-- Graphiques -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
@@ -58,7 +106,7 @@
         <canvas id="sportChart" class="canvas-bar"></canvas>
       </div>
       <div class="bg-white p-4 hand-drawn">
-        <h2 class="font-semibold text-lg mb-2">Détail des sports plébiscités</h2>
+        <h2 class="font-semibold text-lg mb-2">Détail des sports cochés</h2>
         <canvas id="sportActivitiesChart" class="canvas-bar"></canvas>
       </div>
       <div class="bg-white p-4 hand-drawn">
@@ -84,12 +132,14 @@
     </div>
 
     <div class="mb-3 flex items-center gap-2">
-      <button id="export-csv" class="px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700"><i class="fas fa-file-csv mr-2"></i>Exporter CSV</button>
+      <button id="export-csv" class="px-3 py-2 bg-green-600 text-white rounded-lg shadow hover:bg-green-700 flex items-center gap-2">
+        <i class="fas fa-file-csv"></i>Exporter CSV
+      </button>
       <span id="loader" class="text-green-700 hidden ml-2"><i class="fas fa-spinner fa-spin"></i> Chargement...</span>
     </div>
 
-    <button id="show-comments" class="px-3 py-1 bg-indigo-600 text-white rounded hover:bg-indigo-700 mb-4">
-      <i class="fas fa-comments mr-2"></i>Voir tous les commentaires
+    <button id="show-comments" class="px-3 py-2 bg-indigo-600 text-white rounded shadow hover:bg-indigo-700 mb-4 flex items-center gap-2">
+      <i class="fas fa-comments"></i>Voir tous les commentaires
     </button>
     <div id="comments-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
       <div class="bg-white rounded-lg p-6 max-w-3xl w-full overflow-y-auto max-h-[80vh] relative">
@@ -99,10 +149,10 @@
       </div>
     </div>
 
-    <div class="overflow-x-auto hand-drawn bg-white p-2">
+    <div class="overflow-x-auto hand-drawn bg-white p-2 mt-6">
       <table class="min-w-full table-auto" id="responses-table">
         <thead>
-          <tr class="bg-green-100">
+          <tr class="bg-green-100 text-gray-700">
             <th class="p-2">Date</th>
             <th class="p-2">Nom</th>
             <th class="p-2">Service</th>
@@ -131,9 +181,10 @@
         </thead>
         <tbody id="responses-body"></tbody>
       </table>
+      <!-- PAGINATION -->
+      <div id="pagination-controls" class="flex items-center gap-2 mt-4"></div>
     </div>
 
-    <!-- Firebase + Chart.js -->
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
       import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -151,13 +202,17 @@
       const db = getFirestore(app);
 
       const tbody = document.getElementById('responses-body');
-      const loader = document.getElementById('loader');
       const statsDiv = document.getElementById('stats');
+      const loader = document.getElementById('loader');
       let lastResponses = [];
+
+      // Pagination
+      const ROWS_PER_PAGE = 15;
+      let currentPage = 1;
 
       // Jeux de données fixes
       const sexes = ["homme", "femme", "autre", "ne-pas-preciser"];
-      const activites = ["Téléconseiller", "Management opérationnel", "Support"];
+      const activites = ["Téléconseiller", "Management opérationnel", "Ressources Humaines", "Support"];
       const operations = ["Support", "AG2R", "UCPA", "CNAV", "Abeille", "IRP Auto", "Engie DCP", "EHS", "Enedis"];
       const allSports = ["Yoga", "Fitness", "Pilates", "Boxe", "Stretching", "Renforcement musculaire"];
       const sportFrequencies = ["hebdomadaire", "bi-mensuel", "mensuel"];
@@ -167,97 +222,13 @@
 
       let sexeChart, activiteChart, operationChart, sportChart, sportActivitiesChart, sportTravailChart, nutritionChart, massageChart, sophroChart, comChart;
 
-      async function loadResponses() {
-        loader.classList.remove('hidden');
-        tbody.innerHTML = "";
-        const responses = [];
-        let countSatisfait = 0, countSport = 0, countNutrition = 0, countMassage = 0, countSophro = 0;
+      function renderTablePage(page, data = lastResponses) {
+        tbody.innerHTML = '';
+        const start = (page - 1) * ROWS_PER_PAGE;
+        const end = start + ROWS_PER_PAGE;
+        const pageData = data.slice(start, end);
 
-        // Stats
-        const sexeStats = Object.fromEntries(sexes.map(s => [s, 0]));
-        const activiteStats = Object.fromEntries(activites.map(a => [a, 0]));
-        const operationStats = Object.fromEntries(operations.map(o => [o, 0]));
-        const sportStats = { "oui": 0, "non": 0 };
-        const sportFreqStats = Object.fromEntries(sportFrequencies.map(f => [f, 0]));
-        const sportActivitiesStats = Object.fromEntries(allSports.map(s => [s, 0]));
-        let countSurTempsTravail = 0, countHorsTempsTravail = 0;
-        const nutritionStats = { "oui": 0, "non": 0 };
-        const nutritionFreqStats = Object.fromEntries(nutritionFrequencies.map(f => [f, 0]));
-        const massageStats = { "oui": 0, "non": 0 };
-        const massageFreqStats = Object.fromEntries(massageFrequencies.map(f => [f, 0]));
-        const sophroStats = { "oui": 0, "non": 0 };
-        const sophroFreqStats = Object.fromEntries(sophroFrequencies.map(f => [f, 0]));
-
-        // Communication
-        const comStats = {
-          suffisante: { oui: 0, non: 0 },
-          comprehensible: { oui: 0, non: 0 },
-          inscription: { oui: 0, non: 0 }
-        };
-
-        const q = query(collection(db, "reponses-qvct"), orderBy("date", "desc"));
-        const snapshot = await getDocs(q);
-
-        snapshot.forEach(doc => {
-          const d = doc.data();
-          responses.push(d);
-
-          // Stat globales
-          if (d['qvct-satisfaction'] && (d['qvct-satisfaction'] === 'satisfait' || d['qvct-satisfaction'] === 'très-satisfait')) countSatisfait++;
-          if (d['sport-interest'] === 'oui') countSport++;
-          if (d['nutrition-interest'] === 'oui') countNutrition++;
-          if (d['massage-interest'] === 'oui') countMassage++;
-          if (d['sophrology-interest'] === 'oui') countSophro++;
-
-          // Sexe / activité / opération
-          if (d.identity && sexeStats[d.identity] !== undefined) sexeStats[d.identity]++;
-          if (d.activity && activiteStats[d.activity] !== undefined) activiteStats[d.activity]++;
-          if (d.department && operationStats[d.department] !== undefined) operationStats[d.department]++;
-
-          // Sport
-          if (d['sport-interest']) sportStats[d['sport-interest']] = (sportStats[d['sport-interest']] || 0) + 1;
-          if (d['sport-frequency']) sportFreqStats[d['sport-frequency']] = (sportFreqStats[d['sport-frequency']] || 0) + 1;
-          if (d['sport-outside-hours'] === "non") countSurTempsTravail++;
-          else if (d['sport-outside-hours'] === "oui") countHorsTempsTravail++;
-          // Sports cochés
-          if (Array.isArray(d['sport-activities'])) {
-            d['sport-activities'].forEach(sport => {
-              if (sportActivitiesStats[sport] !== undefined) sportActivitiesStats[sport]++;
-            });
-          } else if (typeof d['sport-activities'] === "string") {
-            if (sportActivitiesStats[d['sport-activities']] !== undefined) sportActivitiesStats[d['sport-activities']]++;
-          }
-
-          // Nutrition
-          if (d['nutrition-interest']) nutritionStats[d['nutrition-interest']] = (nutritionStats[d['nutrition-interest']] || 0) + 1;
-          if (d['nutrition-frequency']) nutritionFreqStats[d['nutrition-frequency']] = (nutritionFreqStats[d['nutrition-frequency']] || 0) + 1;
-
-          // Massage
-          if (d['massage-interest']) massageStats[d['massage-interest']] = (massageStats[d['massage-interest']] || 0) + 1;
-          if (d['massage-frequency']) massageFreqStats[d['massage-frequency']] = (massageFreqStats[d['massage-frequency']] || 0) + 1;
-
-          // Sophrologie
-          if (d['sophrology-interest']) sophroStats[d['sophrology-interest']] = (sophroStats[d['sophrology-interest']] || 0) + 1;
-          if (d['sophrology-frequency']) sophroFreqStats[d['sophrology-frequency']] = (sophroFreqStats[d['sophrology-frequency']] || 0) + 1;
-
-          // Communication
-          if (d['com-suffisante']) comStats.suffisante[d['com-suffisante']]++;
-          if (d['com-comprehensible']) comStats.comprehensible[d['com-comprehensible']]++;
-          if (d['com-inscription-facile']) comStats.inscription[d['com-inscription-facile']]++;
-        });
-
-        // Cartes stats haut de page
-        statsDiv.innerHTML = `
-          <div class="stat-card bg-green-100 p-4 rounded shadow"><span class="text-2xl font-bold">${responses.length}</span><br><span class="text-green-900">Réponses totales</span></div>
-          <div class="stat-card bg-blue-100 p-4 rounded shadow"><span class="text-2xl font-bold">${countSatisfait}</span><br><span class="text-blue-900">Satisfait(e)s QVCT</span></div>
-          <div class="stat-card bg-red-100 p-4 rounded shadow"><span class="text-2xl font-bold">${countSport}</span><br><span class="text-red-900">Intéressé(e)s Sport</span></div>
-          <div class="stat-card bg-yellow-100 p-4 rounded shadow"><span class="text-2xl font-bold">${countNutrition}</span><br><span class="text-yellow-900">Intéressé(e)s Nutrition</span></div>
-          <div class="stat-card bg-pink-100 p-4 rounded shadow"><span class="text-2xl font-bold">${countMassage}</span><br><span class="text-pink-900">Intéressé(e)s Massage</span></div>
-          <div class="stat-card bg-indigo-100 p-4 rounded shadow"><span class="text-2xl font-bold">${countSophro}</span><br><span class="text-indigo-900">Intéressé(e)s Sophrologie</span></div>
-        `;
-
-        // Tableau des réponses enrichi
-        for (const d of responses) {
+        for (const d of pageData) {
           tbody.innerHTML += `
             <tr class="border-b">
               <td class="p-2">${d.date ? new Date(d.date).toLocaleDateString() : ''}</td>
@@ -287,10 +258,145 @@
             </tr>
           `;
         }
+        renderPaginationControls(page, data.length);
+      }
 
-        // Graphiques principaux
+      function renderPaginationControls(page, totalRows) {
+        const controls = document.getElementById('pagination-controls');
+        const totalPages = Math.ceil(totalRows / ROWS_PER_PAGE);
+        let html = '';
+        if (totalPages > 1) {
+          html += `<button ${page === 1 ? "disabled" : ""} ${page === 1 ? "" : "tabindex=0"} ${page === 1 ? "" : "aria-label='Page précédente'"}>${'<'}</button>`;
+          for (let i = 1; i <= totalPages; i++) {
+            html += `<button class="${i === page ? 'selected' : ''}" data-page="${i}">${i}</button>`;
+          }
+          html += `<button ${page === totalPages ? "disabled" : ""} ${page === totalPages ? "" : "tabindex=0"} ${page === totalPages ? "" : "aria-label='Page suivante'"}>${'>'}</button>`;
+        }
+        controls.innerHTML = html;
 
-        // Sexe
+        if (totalPages > 1) {
+          const btns = controls.querySelectorAll('button');
+          btns[0].onclick = () => {
+            if (currentPage > 1) {
+              currentPage -= 1;
+              renderTablePage(currentPage, lastResponses);
+            }
+          };
+          btns[btns.length-1].onclick = () => {
+            if (currentPage < totalPages) {
+              currentPage += 1;
+              renderTablePage(currentPage, lastResponses);
+            }
+          };
+          // Numéros de pages
+          controls.querySelectorAll('button[data-page]').forEach(btn => {
+            btn.onclick = () => {
+              currentPage = parseInt(btn.getAttribute('data-page'));
+              renderTablePage(currentPage, lastResponses);
+            };
+          });
+        }
+      }
+
+      async function loadResponses() {
+        loader.classList.remove('hidden');
+        const responses = [];
+        let countSatisfait = 0, countSport = 0, countNutrition = 0, countMassage = 0, countSophro = 0;
+        const sexeStats = Object.fromEntries(sexes.map(s => [s, 0]));
+        const activiteStats = Object.fromEntries(activites.map(a => [a, 0]));
+        const operationStats = Object.fromEntries(operations.map(o => [o, 0]));
+        const sportStats = { "oui": 0, "non": 0 };
+        const sportFreqStats = Object.fromEntries(sportFrequencies.map(f => [f, 0]));
+        const sportActivitiesStats = Object.fromEntries(allSports.map(s => [s, 0]));
+        let countSurTempsTravail = 0, countHorsTempsTravail = 0;
+        const nutritionStats = { "oui": 0, "non": 0 };
+        const nutritionFreqStats = Object.fromEntries(nutritionFrequencies.map(f => [f, 0]));
+        const massageStats = { "oui": 0, "non": 0 };
+        const massageFreqStats = Object.fromEntries(massageFrequencies.map(f => [f, 0]));
+        const sophroStats = { "oui": 0, "non": 0 };
+        const sophroFreqStats = Object.fromEntries(sophroFrequencies.map(f => [f, 0]));
+        const comStats = {
+          suffisante: { oui: 0, non: 0 },
+          comprehensible: { oui: 0, non: 0 },
+          inscription: { oui: 0, non: 0 }
+        };
+
+        const q = query(collection(db, "reponses-qvct"), orderBy("date", "desc"));
+        const snapshot = await getDocs(q);
+
+        snapshot.forEach(doc => {
+          const d = doc.data();
+          responses.push(d);
+
+          if (d['qvct-satisfaction'] && (d['qvct-satisfaction'] === 'satisfait' || d['qvct-satisfaction'] === 'très-satisfait')) countSatisfait++;
+          if (d['sport-interest'] === 'oui') countSport++;
+          if (d['nutrition-interest'] === 'oui') countNutrition++;
+          if (d['massage-interest'] === 'oui') countMassage++;
+          if (d['sophrology-interest'] === 'oui') countSophro++;
+          if (d.identity && sexeStats[d.identity] !== undefined) sexeStats[d.identity]++;
+          if (d.activity && activiteStats[d.activity] !== undefined) activiteStats[d.activity]++;
+          if (d.department && operationStats[d.department] !== undefined) operationStats[d.department]++;
+          if (d['sport-interest']) sportStats[d['sport-interest']] = (sportStats[d['sport-interest']] || 0) + 1;
+          if (d['sport-frequency']) sportFreqStats[d['sport-frequency']] = (sportFreqStats[d['sport-frequency']] || 0) + 1;
+          if (d['sport-outside-hours'] === "non") countSurTempsTravail++;
+          else if (d['sport-outside-hours'] === "oui") countHorsTempsTravail++;
+          if (Array.isArray(d['sport-activities'])) {
+            d['sport-activities'].forEach(sport => {
+              if (sportActivitiesStats[sport] !== undefined) sportActivitiesStats[sport]++;
+            });
+          } else if (typeof d['sport-activities'] === "string") {
+            if (sportActivitiesStats[d['sport-activities']] !== undefined) sportActivitiesStats[d['sport-activities']]++;
+          }
+          if (d['nutrition-interest']) nutritionStats[d['nutrition-interest']] = (nutritionStats[d['nutrition-interest']] || 0) + 1;
+          if (d['nutrition-frequency']) nutritionFreqStats[d['nutrition-frequency']] = (nutritionFreqStats[d['nutrition-frequency']] || 0) + 1;
+          if (d['massage-interest']) massageStats[d['massage-interest']] = (massageStats[d['massage-interest']] || 0) + 1;
+          if (d['massage-frequency']) massageFreqStats[d['massage-frequency']] = (massageFreqStats[d['massage-frequency']] || 0) + 1;
+          if (d['sophrology-interest']) sophroStats[d['sophrology-interest']] = (sophroStats[d['sophrology-interest']] || 0) + 1;
+          if (d['sophrology-frequency']) sophroFreqStats[d['sophrology-frequency']] = (sophroFreqStats[d['sophrology-frequency']] || 0) + 1;
+          if (d['com-suffisante']) comStats.suffisante[d['com-suffisante']]++;
+          if (d['com-comprehensible']) comStats.comprehensible[d['com-comprehensible']]++;
+          if (d['com-inscription-facile']) comStats.inscription[d['com-inscription-facile']]++;
+        });
+
+        // Cartes stats haut de page (améliorées)
+        statsDiv.innerHTML = `
+          <div class="stat-card p-5 relative shadow">
+            <div class="stat-icon"><i class="fas fa-users text-green-900"></i></div>
+            <span class="text-3xl font-extrabold text-green-900">${responses.length}</span>
+            <div class="mt-1 text-green-700 font-semibold">Réponses totales</div>
+          </div>
+          <div class="stat-card p-5 relative shadow">
+            <div class="stat-icon"><i class="fas fa-smile-beam text-blue-700"></i></div>
+            <span class="text-3xl font-extrabold text-blue-700">${countSatisfait}</span>
+            <div class="mt-1 text-blue-700 font-semibold">Satisfait(e)s QVCT</div>
+          </div>
+          <div class="stat-card p-5 relative shadow">
+            <div class="stat-icon"><i class="fas fa-running text-red-700"></i></div>
+            <span class="text-3xl font-extrabold text-red-700">${countSport}</span>
+            <div class="mt-1 text-red-700 font-semibold">Intéressé(e)s Sport</div>
+          </div>
+          <div class="stat-card p-5 relative shadow">
+            <div class="stat-icon"><i class="fas fa-apple-alt text-yellow-500"></i></div>
+            <span class="text-3xl font-extrabold text-yellow-600">${countNutrition}</span>
+            <div class="mt-1 text-yellow-700 font-semibold">Intéressé(e)s Nutrition</div>
+          </div>
+          <div class="stat-card p-5 relative shadow">
+            <div class="stat-icon"><i class="fas fa-hands text-pink-500"></i></div>
+            <span class="text-3xl font-extrabold text-pink-600">${countMassage}</span>
+            <div class="mt-1 text-pink-600 font-semibold">Intéressé(e)s Massage</div>
+          </div>
+          <div class="stat-card p-5 relative shadow">
+            <div class="stat-icon"><i class="fas fa-brain text-indigo-600"></i></div>
+            <span class="text-3xl font-extrabold text-indigo-700">${countSophro}</span>
+            <div class="mt-1 text-indigo-700 font-semibold">Intéressé(e)s Sophrologie</div>
+          </div>
+        `;
+
+        lastResponses = responses;
+        currentPage = 1;
+        renderTablePage(currentPage, lastResponses);
+
+        // Graphiques principaux (inchangés)
         if (sexeChart) sexeChart.destroy();
         sexeChart = new Chart(document.getElementById('sexeChart'), {
           type: 'pie',
@@ -299,8 +405,6 @@
             datasets: [{ data: sexes.map(s => sexeStats[s]), backgroundColor: ['#9ED2C6','#F2B5D4','#BDE0FE','#F7B267','#B7B7A4']}]
           }
         });
-
-        // Activité
         if (activiteChart) activiteChart.destroy();
         activiteChart = new Chart(document.getElementById('activiteChart'), {
           type: 'doughnut',
@@ -309,8 +413,6 @@
             datasets: [{ data: activites.map(a => activiteStats[a]), backgroundColor: ['#7ED957','#FFD6A5','#9ED2C6','#B5B2FF'] }]
           }
         });
-
-        // Opération
         if (operationChart) operationChart.destroy();
         operationChart = new Chart(document.getElementById('operationChart'), {
           type: 'bar',
@@ -319,8 +421,6 @@
             datasets: [{ label: "Répartition Opérations", data: operations.map(o => operationStats[o]), backgroundColor: '#60A5FA' }]
           }
         });
-
-        // SPORT: intérêt & fréquence
         if (sportChart) sportChart.destroy();
         sportChart = new Chart(document.getElementById('sportChart'), {
           type: 'bar',
@@ -336,8 +436,6 @@
             }]
           }
         });
-
-        // Détail des sports cochés (NOUVEAU)
         if (sportActivitiesChart) sportActivitiesChart.destroy();
         sportActivitiesChart = new Chart(document.getElementById('sportActivitiesChart'), {
           type: 'bar',
@@ -350,8 +448,6 @@
             }]
           }
         });
-
-        // Sport sur temps de travail
         if (sportTravailChart) sportTravailChart.destroy();
         sportTravailChart = new Chart(document.getElementById('sportTravailChart'), {
           type: 'pie',
@@ -363,8 +459,6 @@
             }]
           }
         });
-
-        // Nutrition
         if (nutritionChart) nutritionChart.destroy();
         nutritionChart = new Chart(document.getElementById('nutritionChart'), {
           type: 'bar',
@@ -380,8 +474,6 @@
             }]
           }
         });
-
-        // MASSAGE
         if (massageChart) massageChart.destroy();
         massageChart = new Chart(document.getElementById('massageChart'), {
           type: 'bar',
@@ -397,8 +489,6 @@
             }]
           }
         });
-
-        // SOPHRO
         if (sophroChart) sophroChart.destroy();
         sophroChart = new Chart(document.getElementById('sophroChart'), {
           type: 'bar',
@@ -414,8 +504,6 @@
             }]
           }
         });
-
-        // COMMUNICATION
         if (comChart) comChart.destroy();
         comChart = new Chart(document.getElementById('comChart'), {
           type: 'bar',
@@ -441,12 +529,9 @@
             }]
           }
         });
-
-        lastResponses = responses;
         loader.classList.add('hidden');
       }
 
-      // Export CSV
       document.getElementById('export-csv').addEventListener('click', async () => {
         const q = query(collection(db, "reponses-qvct"), orderBy("date", "desc"));
         const snapshot = await getDocs(q);
@@ -511,7 +596,7 @@
                 ${d['nutrition-topics'] ? `<div><b>Nutrition - sujets :</b> ${d['nutrition-topics']}</div>` : ""}
                 ${d['massage-types'] ? `<div><b>Massage - types :</b> ${d['massage-types']}</div>` : ""}
                 ${d['sophrology-goals'] ? `<div><b>Sophro - objectifs :</b> ${d['sophrology-goals']}</div>` : ""}
-                ${d['other-workshop-suggestions'] ? `<div><b>Autres ateliers :</b> ${d['other-workshop-suggestions']}</div>` : ""}
+                ${d['other-workshop-suggestions'] ? `<div><b>Autres ateliers suggérés :</b> ${d['other-workshop-suggestions']}</div>` : ""}
                 ${d['additional-comments'] ? `<div><b>Commentaires libres :</b> ${d['additional-comments']}</div>` : ""}
                 ${d['com-commentaires'] ? `<div><b>Commentaires communication :</b> ${d['com-commentaires']}</div>` : ""}
               </div>
