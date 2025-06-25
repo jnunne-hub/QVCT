@@ -11,7 +11,12 @@
   <style>
     body { font-family: 'Comic Neue', cursive; background: #f8f9fa; }
     .hand-drawn { border: 2px solid #333; border-radius: 25px; box-shadow: 5px 5px 0px rgba(0,0,0,0.05);}
-    th, td { font-size: 0.97rem; }
+    table, th, td, input, button, select, textarea {
+  font-family: Arial, Helvetica, sans-serif !important;
+  font-size: 15px !important;
+}
+.wide-col { min-width: 260px; max-width: 400px; width: 22vw; }
+
     .stat-card {
       min-width: 190px;
       background: linear-gradient(100deg, #f0fff0 65%, #e6f0ff 100%);
@@ -160,7 +165,7 @@
             <th class="p-2">Activité</th>
             <th class="p-2">Satisfaction QVCT</th>
             <th class="p-2">Atelier Sport</th>
-            <th class="p-2">Sports cochés</th>
+            <th class="p-2 wide-col">Sports cochés</th>
             <th class="p-2">Atelier Nutrition</th>
             <th class="p-2">Atelier Massage</th>
             <th class="p-2">Sophrologie</th>
@@ -168,15 +173,15 @@
             <th class="p-2">Com suff.</th>
             <th class="p-2">Com compréh.</th>
             <th class="p-2">Inscription facile</th>
-            <th class="p-2">Commentaire com</th>
-            <th class="p-2">Apprécié QVCT</th>
-            <th class="p-2">À améliorer QVCT</th>
+            <th class="p-2 wide-col">Commentaire com</th>
+            <th class="p-2 wide-col">Apprécié QVCT</th>
+            <th class="p-2 wide-col">À améliorer QVCT</th>
             <th class="p-2">Sport - Types souhaités</th>
-            <th class="p-2">Nutrition - Sujets</th>
+            <th class="p-2 wide-col">Nutrition - Sujets</th>
             <th class="p-2">Massage - Types</th>
             <th class="p-2">Sophro - Objectifs</th>
-            <th class="p-2">Autres ateliers suggérés</th>
-            <th class="p-2">Commentaires libres</th>
+            <th class="p-2 wide-col">Autres ateliers suggérés</th>
+            <th class="p-2 wide-col">Commentaires libres</th>
           </tr>
         </thead>
         <tbody id="responses-body"></tbody>
