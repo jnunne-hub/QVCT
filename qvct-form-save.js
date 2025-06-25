@@ -18,29 +18,26 @@ document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('wellness-form');
   if (!form) return;
 
-  form.addEventListener('submit', async function(e) {
-    // Validation NOM ou ANONYME obligatoire
+  // Gestion du formulaire
+  form.addEventListener('submit', async function (e) {
     const isAnonymous = document.getElementById('anonymous').checked;
     const nameField = document.getElementById('name');
     const name = nameField.value.trim();
 
-    nameField.disabled = false; // Toujours le réactiver avant validation
-
+    nameField.disabled = false;
     if (!isAnonymous && name === "") {
       e.preventDefault();
       alert("Merci de renseigner votre nom et prénom OU de cocher 'Rester anonyme'.");
       nameField.focus();
-      return false; // On stoppe TOUT
+      return false;
     }
 
-    e.preventDefault(); // Bloque le rechargement systématiquement ici
-
-    // Collecte des réponses
+    e.preventDefault();
     const formData = new FormData(this);
     const data = {};
 
     for (let [key, value] of formData.entries()) {
-      if (key === 'other-workshops') {
+      if (['other-workshops', 'sport-activities'].includes(key)) {
         if (!data[key]) data[key] = [];
         data[key].push(value);
       } else {
@@ -52,12 +49,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
     }
+
     data.date = new Date().toISOString();
 
-    // ENREGISTREMENT DANS FIRESTORE
     try {
       await addDoc(collection(db, "reponses-qvct"), data);
-      // Affichage confirmation
       document.getElementById('wellness-form').classList.add('hidden');
       document.getElementById('confirmation').classList.remove('hidden');
       document.getElementById('progress-bar').style.width = '100%';
@@ -67,4 +63,71 @@ document.addEventListener('DOMContentLoaded', () => {
       console.error("Erreur Firebase:", err);
     }
   });
+
+  // Gestion dynamique des horaires "Non / pause déjeuner / fin de journée"
+  const sections = ['sport', 'nutrition', 'massage', 'sophrology'];
+  sections.forEach(section => {
+    const radioNon = document.querySelector(`input[name="${section}-outside-hours"][value="non"]`);
+    const checkboxLunch = document.querySelector(`input[name="${section}-time-lunch"]`);
+    const checkboxEvening = document.querySelector(`input[name="${section}-time-evening"]`);
+
+    if (radioNon && checkboxLunch && checkboxEvening) {
+      // Quand "Non" est sélectionné
+      radioNon.addEventListener('change', function () {
+        if (this.checked) {
+          checkboxLunch.checked = false;
+          checkboxEvening.checked = false;
+          checkboxLunch.disabled = true;
+          checkboxEvening.disabled = true;
+
+          checkboxLunch.nextElementSibling.querySelector('.checked-box')?.classList.add('hidden');
+          checkboxEvening.nextElementSibling.querySelector('.checked-box')?.classList.add('hidden');
+        }
+      });
+
+      // Quand on clique sur une checkbox => réactive + désélectionne "Non"
+      [checkboxLunch, checkboxEvening].forEach(checkbox => {
+        checkbox.addEventListener('change', function () {
+          checkboxLunch.disabled = false;
+          checkboxEvening.disabled = false;
+
+          if (this.checked) {
+            radioNon.checked = false;
+            radioNon.nextElementSibling.querySelector('.checked-radio')?.classList.add('hidden');
+          }
+
+          // Si aucune n’est cochée, recoche "Non" et désactive à nouveau
+          if (!checkboxLunch.checked && !checkboxEvening.checked) {
+            radioNon.checked = true;
+            radioNon.nextElementSibling.querySelector('.checked-radio')?.classList.remove('hidden');
+            checkboxLunch.disabled = true;
+            checkboxEvening.disabled = true;
+          }
+        });
+      });
+    }
+  });
 });
+// Affiche ou masque les horaires selon le choix Oui/Non pour "hors temps de travail"
+function toggleSectionTimes(section) {
+    const radioOui = document.querySelector(`input[name="${section}-outside-hours"][value="oui"]`);
+    const details = document.getElementById(`${section}-times-details`);
+    if (radioOui && radioOui.checked) {
+        details.classList.remove('hidden');
+    } else {
+        details.classList.add('hidden');
+        details.querySelectorAll('input[type="checkbox"]').forEach(cb => { cb.checked = false; });
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    ['sport', 'nutrition', 'massage', 'sophrology'].forEach(section => {
+        document.querySelectorAll(`input[name="${section}-outside-hours"]`).forEach(input => {
+            input.addEventListener('change', () => toggleSectionTimes(section));
+        });
+        // Initialise l'état à l'ouverture
+        toggleSectionTimes(section);
+    });
+});
+
+
