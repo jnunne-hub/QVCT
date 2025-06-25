@@ -1,5 +1,6 @@
 
 
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -304,38 +305,90 @@
                             </div>
                             
                             <div class="mb-4">
-                                <p class="text-sm text-gray-600 mb-2">Seriez-vous prêt(e) à participer en dehors des heures de travail ?</p>
-                                <div class="space-y-2">
-                                    <label class="inline-flex items-center wiggle">
-                                        <input type="radio" name="sport-outside-hours" value="non" class="form-radio text-green-600 opacity-0 absolute h-8 w-8">
-                                        <div class="hand-drawn-radio w-6 h-6 bg-white flex items-center justify-center mr-2">
-                                            <div class="hidden w-3 h-3 bg-green-600 rounded-full checked-radio"></div>
-                                        </div>
-                                        <span class="ml-2">Non</span>
-                                    </label>
-                                    <br>
-                                    <label class="inline-flex items-center wiggle">
-                                        <input type="checkbox" name="sport-time-lunch" class="opacity-0 absolute h-8 w-8">
-                                        <div class="hand-drawn-checkbox w-5 h-5 bg-white flex items-center justify-center mr-2">
-                                            <i class="fas fa-check text-green-600 text-xs hidden checked-box"></i>
-                                        </div>
-                                        <span class="ml-2">Pendant la pause déjeuner</span>
-                                    </label>
-                                    <br>
-                                    <label class="inline-flex items-center wiggle">
-                                        <input type="checkbox" name="sport-time-evening" class="opacity-0 absolute h-8 w-8">
-                                        <div class="hand-drawn-checkbox w-5 h-5 bg-white flex items-center justify-center mr-2">
-                                            <i class="fas fa-check text-green-600 text-xs hidden checked-box"></i>
-                                        </div>
-                                        <span class="ml-2">En fin de journée (après le travail)</span>
-                                    </label>
-                                </div>
-                            </div>
+    <p class="text-sm text-gray-600 mb-2">Seriez-vous prêt(e) à participer hors temps de travail&nbsp;?</p>
+    <div class="flex items-center space-x-4">
+        <label class="inline-flex items-center wiggle">
+            <input type="radio" name="sport-outside-hours" value="oui" class="form-radio text-green-600 opacity-0 absolute h-8 w-8">
+            <div class="hand-drawn-radio w-6 h-6 bg-white flex items-center justify-center mr-2">
+                <div class="hidden w-3 h-3 bg-green-600 rounded-full checked-radio"></div>
+            </div>
+            <span class="ml-2">Oui</span>
+        </label>
+        <label class="inline-flex items-center wiggle">
+            <input type="radio" name="sport-outside-hours" value="non" class="form-radio text-green-600 opacity-0 absolute h-8 w-8">
+            <div class="hand-drawn-radio w-6 h-6 bg-white flex items-center justify-center mr-2">
+                <div class="hidden w-3 h-3 bg-green-600 rounded-full checked-radio"></div>
+            </div>
+            <span class="ml-2">Non</span>
+        </label>
+    </div>
+    <div id="sport-times-details" class="mt-2 ml-6 hidden">
+        <label class="inline-flex items-center wiggle mr-6">
+            <input type="checkbox" name="sport-time-lunch" class="opacity-0 absolute h-8 w-8">
+            <div class="hand-drawn-checkbox w-5 h-5 bg-white flex items-center justify-center mr-2">
+                <i class="fas fa-check text-green-600 text-xs hidden checked-box"></i>
+            </div>
+            <span class="ml-2">Pendant la pause déjeuner</span>
+        </label>
+        <label class="inline-flex items-center wiggle">
+            <input type="checkbox" name="sport-time-evening" class="opacity-0 absolute h-8 w-8">
+            <div class="hand-drawn-checkbox w-5 h-5 bg-white flex items-center justify-center mr-2">
+                <i class="fas fa-check text-green-600 text-xs hidden checked-box"></i>
+            </div>
+            <span class="ml-2">En fin de journée (après le travail)</span>
+        </label>
+    </div>
+</div>
+
                             
                             <div class="mb-4">
-                                <p class="text-sm text-gray-600 mb-2">Quels types d'activités sportives vous intéresseraient ?</p>
-                                <textarea name="sport-types" rows="2" class="w-full px-3 py-2 hand-drawn-input focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="Ex: Pilate, yoga, fitness, stretching..."></textarea>
-                            </div>
+    <p class="text-sm text-gray-600 mb-2">Quels types d'activités sportives vous intéresseraient ?</p>
+    <div class="grid grid-cols-2 gap-2">
+        <label class="inline-flex items-center">
+            <input type="checkbox" name="sport-activities" value="Yoga" class="opacity-0 absolute h-8 w-8">
+            <div class="hand-drawn-checkbox w-5 h-5 bg-white flex items-center justify-center mr-2">
+                <i class="fas fa-check text-green-600 text-xs hidden checked-box"></i>
+            </div>
+            <span class="ml-2">Yoga</span>
+        </label>
+        <label class="inline-flex items-center">
+            <input type="checkbox" name="sport-activities" value="Fitness" class="opacity-0 absolute h-8 w-8">
+            <div class="hand-drawn-checkbox w-5 h-5 bg-white flex items-center justify-center mr-2">
+                <i class="fas fa-check text-green-600 text-xs hidden checked-box"></i>
+            </div>
+            <span class="ml-2">Fitness</span>
+        </label>
+        <label class="inline-flex items-center">
+            <input type="checkbox" name="sport-activities" value="Pilates" class="opacity-0 absolute h-8 w-8">
+            <div class="hand-drawn-checkbox w-5 h-5 bg-white flex items-center justify-center mr-2">
+                <i class="fas fa-check text-green-600 text-xs hidden checked-box"></i>
+            </div>
+            <span class="ml-2">Pilates</span>
+        </label>
+        <label class="inline-flex items-center">
+            <input type="checkbox" name="sport-activities" value="Boxe" class="opacity-0 absolute h-8 w-8">
+            <div class="hand-drawn-checkbox w-5 h-5 bg-white flex items-center justify-center mr-2">
+                <i class="fas fa-check text-green-600 text-xs hidden checked-box"></i>
+            </div>
+            <span class="ml-2">Sport de défense</span>
+        </label>
+        <label class="inline-flex items-center">
+            <input type="checkbox" name="sport-activities" value="Stretching" class="opacity-0 absolute h-8 w-8">
+            <div class="hand-drawn-checkbox w-5 h-5 bg-white flex items-center justify-center mr-2">
+                <i class="fas fa-check text-green-600 text-xs hidden checked-box"></i>
+            </div>
+            <span class="ml-2">Stretching</span>
+        </label>
+        <label class="inline-flex items-center">
+            <input type="checkbox" name="sport-activities" value="Renforcement musculaire" class="opacity-0 absolute h-8 w-8">
+            <div class="hand-drawn-checkbox w-5 h-5 bg-white flex items-center justify-center mr-2">
+                <i class="fas fa-check text-green-600 text-xs hidden checked-box"></i>
+            </div>
+            <span class="ml-2">Renforcement musculaire</span>
+        </label>
+    </div>
+</div>
+
                         </div>
                     </div>
 
@@ -352,7 +405,7 @@
                             <p class="text-sm text-gray-600 mb-2">Seriez-vous intéressé(e) par des ateliers de nutrition ?</p>
                             <div class="flex items-center space-x-4">
                                 <label class="inline-flex items-center wiggle">
-                                    <input type="radio" name="nutrition-interest" value="oui" required class="form-radio text-green-600 opacity-0 absolute h-8 w-8" onchange="toggleSection('nutrition')">
+                                    <input type="radio" name="nutrition-interest" value="oui" class="form-radio text-green-600 opacity-0 absolute h-8 w-8" onchange="toggleSection('nutrition')">
                                     <div class="hand-drawn-radio w-6 h-6 bg-white flex items-center justify-center mr-2">
                                         <div class="hidden w-3 h-3 bg-green-600 rounded-full checked-radio"></div>
                                     </div>
@@ -379,34 +432,42 @@
                                 </select>
                             </div>
                             
-                            <div class="mb-4">
-                                <p class="text-sm text-gray-600 mb-2">Seriez-vous prêt(e) à participer en dehors des heures de travail ?</p>
-                                <div class="space-y-2">
-                                    <label class="inline-flex items-center wiggle">
-                                        <input type="radio" name="nutrition-outside-hours" value="non" class="form-radio text-green-600 opacity-0 absolute h-8 w-8">
-                                        <div class="hand-drawn-radio w-6 h-6 bg-white flex items-center justify-center mr-2">
-                                            <div class="hidden w-3 h-3 bg-green-600 rounded-full checked-radio"></div>
-                                        </div>
-                                        <span class="ml-2">Non</span>
-                                    </label>
-                                    <br>
-                                    <label class="inline-flex items-center wiggle">
-                                        <input type="checkbox" name="nutrition-time-lunch" class="opacity-0 absolute h-8 w-8">
-                                        <div class="hand-drawn-checkbox w-5 h-5 bg-white flex items-center justify-center mr-2">
-                                            <i class="fas fa-check text-green-600 text-xs hidden checked-box"></i>
-                                        </div>
-                                        <span class="ml-2">Pendant la pause déjeuner</span>
-                                    </label>
-                                    <br>
-                                    <label class="inline-flex items-center wiggle">
-                                        <input type="checkbox" name="nutrition-time-evening" class="opacity-0 absolute h-8 w-8">
-                                        <div class="hand-drawn-checkbox w-5 h-5 bg-white flex items-center justify-center mr-2">
-                                            <i class="fas fa-check text-green-600 text-xs hidden checked-box"></i>
-                                        </div>
-                                        <span class="ml-2">En fin de journée (après le travail)</span>
-                                    </label>
-                                </div>
-                            </div>
+<div class="mb-4">
+    <p class="text-sm text-gray-600 mb-2">Seriez-vous prêt(e) à participer hors temps de travail&nbsp;?</p>
+    <div class="flex items-center space-x-4">
+        <label class="inline-flex items-center wiggle">
+            <input type="radio" name="nutrition-outside-hours" value="oui" class="form-radio text-green-600 opacity-0 absolute h-8 w-8">
+            <div class="hand-drawn-radio w-6 h-6 bg-white flex items-center justify-center mr-2">
+                <div class="hidden w-3 h-3 bg-green-600 rounded-full checked-radio"></div>
+            </div>
+            <span class="ml-2">Oui</span>
+        </label>
+        <label class="inline-flex items-center wiggle">
+            <input type="radio" name="nutrition-outside-hours" value="non" class="form-radio text-green-600 opacity-0 absolute h-8 w-8">
+            <div class="hand-drawn-radio w-6 h-6 bg-white flex items-center justify-center mr-2">
+                <div class="hidden w-3 h-3 bg-green-600 rounded-full checked-radio"></div>
+            </div>
+            <span class="ml-2">Non</span>
+        </label>
+    </div>
+    <div id="nutrition-times-details" class="mt-2 ml-6 hidden">
+        <label class="inline-flex items-center wiggle mr-6">
+            <input type="checkbox" name="nutrition-time-lunch" class="opacity-0 absolute h-8 w-8">
+            <div class="hand-drawn-checkbox w-5 h-5 bg-white flex items-center justify-center mr-2">
+                <i class="fas fa-check text-green-600 text-xs hidden checked-box"></i>
+            </div>
+            <span class="ml-2">Pendant la pause déjeuner</span>
+        </label>
+        <label class="inline-flex items-center wiggle">
+            <input type="checkbox" name="nutrition-time-evening" class="opacity-0 absolute h-8 w-8">
+            <div class="hand-drawn-checkbox w-5 h-5 bg-white flex items-center justify-center mr-2">
+                <i class="fas fa-check text-green-600 text-xs hidden checked-box"></i>
+            </div>
+            <span class="ml-2">En fin de journée (après le travail)</span>
+        </label>
+    </div>
+</div>
+
                             
                             <div class="mb-4">
                                 <p class="text-sm text-gray-600 mb-2">Quels sujets de nutrition vous intéresseraient particulièrement ?</p>
@@ -455,34 +516,43 @@
                                 </select>
                             </div>
                             
-                            <div class="mb-4">
-                                <p class="text-sm text-gray-600 mb-2">Seriez-vous prêt(e) à participer en dehors des heures de travail ?</p>
-                                <div class="space-y-2">
-                                    <label class="inline-flex items-center wiggle">
-                                        <input type="radio" name="massage-outside-hours" value="non" class="form-radio text-green-600 opacity-0 absolute h-8 w-8">
-                                        <div class="hand-drawn-radio w-6 h-6 bg-white flex items-center justify-center mr-2">
-                                            <div class="hidden w-3 h-3 bg-green-600 rounded-full checked-radio"></div>
-                                        </div>
-                                        <span class="ml-2">Non</span>
-                                    </label>
-                                    <br>
-                                    <label class="inline-flex items-center wiggle">
-                                        <input type="checkbox" name="massage-time-lunch" class="opacity-0 absolute h-8 w-8">
-                                        <div class="hand-drawn-checkbox w-5 h-5 bg-white flex items-center justify-center mr-2">
-                                            <i class="fas fa-check text-green-600 text-xs hidden checked-box"></i>
-                                        </div>
-                                        <span class="ml-2">Pendant la pause déjeuner</span>
-                                    </label>
-                                    <br>
-                                    <label class="inline-flex items-center wiggle">
-                                        <input type="checkbox" name="massage-time-evening" class="opacity-0 absolute h-8 w-8">
-                                        <div class="hand-drawn-checkbox w-5 h-5 bg-white flex items-center justify-center mr-2">
-                                            <i class="fas fa-check text-green-600 text-xs hidden checked-box"></i>
-                                        </div>
-                                        <span class="ml-2">En fin de journée (après le travail)</span>
-                                    </label>
-                                </div>
-                            </div>
+<div class="mb-4">
+    <p class="text-sm text-gray-600 mb-2">Seriez-vous prêt(e) à participer hors temps de travail&nbsp;?</p>
+    <div class="flex items-center space-x-4">
+        <label class="inline-flex items-center wiggle">
+            <input type="radio" name="massage-outside-hours" value="oui" class="form-radio text-green-600 opacity-0 absolute h-8 w-8">
+            <div class="hand-drawn-radio w-6 h-6 bg-white flex items-center justify-center mr-2">
+                <div class="hidden w-3 h-3 bg-green-600 rounded-full checked-radio"></div>
+            </div>
+            <span class="ml-2">Oui</span>
+        </label>
+        <label class="inline-flex items-center wiggle">
+            <input type="radio" name="massage-outside-hours" value="non" class="form-radio text-green-600 opacity-0 absolute h-8 w-8">
+            <div class="hand-drawn-radio w-6 h-6 bg-white flex items-center justify-center mr-2">
+                <div class="hidden w-3 h-3 bg-green-600 rounded-full checked-radio"></div>
+            </div>
+            <span class="ml-2">Non</span>
+        </label>
+    </div>
+    <div id="massage-times-details" class="mt-2 ml-6 hidden">
+        <label class="inline-flex items-center wiggle mr-6">
+            <input type="checkbox" name="massage-time-lunch" class="opacity-0 absolute h-8 w-8">
+            <div class="hand-drawn-checkbox w-5 h-5 bg-white flex items-center justify-center mr-2">
+                <i class="fas fa-check text-green-600 text-xs hidden checked-box"></i>
+            </div>
+            <span class="ml-2">Pendant la pause déjeuner</span>
+        </label>
+        <label class="inline-flex items-center wiggle">
+            <input type="checkbox" name="massage-time-evening" class="opacity-0 absolute h-8 w-8">
+            <div class="hand-drawn-checkbox w-5 h-5 bg-white flex items-center justify-center mr-2">
+                <i class="fas fa-check text-green-600 text-xs hidden checked-box"></i>
+            </div>
+            <span class="ml-2">En fin de journée (après le travail)</span>
+        </label>
+    </div>
+</div>
+
+
                             
                             <div class="mb-4">
                                 <p class="text-sm text-gray-600 mb-2">Quels types de massage vous intéresseraient ?</p>
@@ -531,34 +601,43 @@
                                 </select>
                             </div>
                             
-                            <div class="mb-4">
-                                <p class="text-sm text-gray-600 mb-2">Seriez-vous prêt(e) à participer en dehors des heures de travail ?</p>
-                                <div class="space-y-2">
-                                    <label class="inline-flex items-center wiggle">
-                                        <input type="radio" name="sophrology-outside-hours" value="non" class="form-radio text-green-600 opacity-0 absolute h-8 w-8">
-                                        <div class="hand-drawn-radio w-6 h-6 bg-white flex items-center justify-center mr-2">
-                                            <div class="hidden w-3 h-3 bg-green-600 rounded-full checked-radio"></div>
-                                        </div>
-                                        <span class="ml-2">Non</span>
-                                    </label>
-                                    <br>
-                                    <label class="inline-flex items-center wiggle">
-                                        <input type="checkbox" name="sophrology-time-lunch" class="opacity-0 absolute h-8 w-8">
-                                        <div class="hand-drawn-checkbox w-5 h-5 bg-white flex items-center justify-center mr-2">
-                                            <i class="fas fa-check text-green-600 text-xs hidden checked-box"></i>
-                                        </div>
-                                        <span class="ml-2">Pendant la pause déjeuner</span>
-                                    </label>
-                                    <br>
-                                    <label class="inline-flex items-center wiggle">
-                                        <input type="checkbox" name="sophrology-time-evening" class="opacity-0 absolute h-8 w-8">
-                                        <div class="hand-drawn-checkbox w-5 h-5 bg-white flex items-center justify-center mr-2">
-                                            <i class="fas fa-check text-green-600 text-xs hidden checked-box"></i>
-                                        </div>
-                                        <span class="ml-2">En fin de journée (après le travail)</span>
-                                    </label>
-                                </div>
-                            </div>
+<div class="mb-4">
+    <p class="text-sm text-gray-600 mb-2">Seriez-vous prêt(e) à participer hors temps de travail&nbsp;?</p>
+    <div class="flex items-center space-x-4">
+        <label class="inline-flex items-center wiggle">
+            <input type="radio" name="sophrology-outside-hours" value="oui" class="form-radio text-green-600 opacity-0 absolute h-8 w-8">
+            <div class="hand-drawn-radio w-6 h-6 bg-white flex items-center justify-center mr-2">
+                <div class="hidden w-3 h-3 bg-green-600 rounded-full checked-radio"></div>
+            </div>
+            <span class="ml-2">Oui</span>
+        </label>
+        <label class="inline-flex items-center wiggle">
+            <input type="radio" name="sophrology-outside-hours" value="non" class="form-radio text-green-600 opacity-0 absolute h-8 w-8">
+            <div class="hand-drawn-radio w-6 h-6 bg-white flex items-center justify-center mr-2">
+                <div class="hidden w-3 h-3 bg-green-600 rounded-full checked-radio"></div>
+            </div>
+            <span class="ml-2">Non</span>
+        </label>
+    </div>
+    <div id="sophrology-times-details" class="mt-2 ml-6 hidden">
+        <label class="inline-flex items-center wiggle mr-6">
+            <input type="checkbox" name="sophrology-time-lunch" class="opacity-0 absolute h-8 w-8">
+            <div class="hand-drawn-checkbox w-5 h-5 bg-white flex items-center justify-center mr-2">
+                <i class="fas fa-check text-green-600 text-xs hidden checked-box"></i>
+            </div>
+            <span class="ml-2">Pendant la pause déjeuner</span>
+        </label>
+        <label class="inline-flex items-center wiggle">
+            <input type="checkbox" name="sophrology-time-evening" class="opacity-0 absolute h-8 w-8">
+            <div class="hand-drawn-checkbox w-5 h-5 bg-white flex items-center justify-center mr-2">
+                <i class="fas fa-check text-green-600 text-xs hidden checked-box"></i>
+            </div>
+            <span class="ml-2">En fin de journée (après le travail)</span>
+        </label>
+    </div>
+</div>
+
+
                             
                             <div class="mb-4">
                                 <p class="text-sm text-gray-600 mb-2">Quels objectifs souhaiteriez-vous atteindre avec la sophrologie ?</p>
@@ -718,6 +797,86 @@
                         </div>
                     </div>
 
+
+
+<!-- Bloc Communication -->
+<div class="mb-8 fade-in">
+    <div class="flex items-center mb-4">
+        <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mr-4 hand-drawn section-icon">
+            <i class="fas fa-bullhorn text-orange-500 text-xl"></i>
+        </div>
+        <h2 class="text-xl font-semibold text-gray-800">Communication sur les ateliers</h2>
+    </div>
+    <div class="ml-16 space-y-4">
+        <div>
+            <label class="block mb-1 text-gray-700 font-medium">Pensez-vous que la communication autour des ateliers est suffisante&nbsp;?</label>
+            <div class="flex items-center gap-4">
+                <label class="inline-flex items-center">
+                    <input type="radio" name="com-suffisante" value="oui" required class="form-radio opacity-0 absolute h-8 w-8">
+                    <div class="hand-drawn-radio w-5 h-5 bg-white flex items-center justify-center mr-2">
+                        <div class="hidden w-3 h-3 bg-orange-400 rounded-full checked-radio"></div>
+                    </div>
+                    <span class="ml-1">Oui</span>
+                </label>
+                <label class="inline-flex items-center">
+                    <input type="radio" name="com-suffisante" value="non" class="form-radio opacity-0 absolute h-8 w-8">
+                    <div class="hand-drawn-radio w-5 h-5 bg-white flex items-center justify-center mr-2">
+                        <div class="hidden w-3 h-3 bg-orange-400 rounded-full checked-radio"></div>
+                    </div>
+                    <span class="ml-1">Non</span>
+                </label>
+            </div>
+        </div>
+        <div>
+            <label class="block mb-1 text-gray-700 font-medium">La communication vous paraît-elle compréhensible&nbsp;?</label>
+            <div class="flex items-center gap-4">
+                <label class="inline-flex items-center">
+                    <input type="radio" name="com-comprehensible" value="oui" required class="form-radio opacity-0 absolute h-8 w-8">
+                    <div class="hand-drawn-radio w-5 h-5 bg-white flex items-center justify-center mr-2">
+                        <div class="hidden w-3 h-3 bg-orange-400 rounded-full checked-radio"></div>
+                    </div>
+                    <span class="ml-1">Oui</span>
+                </label>
+                <label class="inline-flex items-center">
+                    <input type="radio" name="com-comprehensible" value="non" class="form-radio opacity-0 absolute h-8 w-8">
+                    <div class="hand-drawn-radio w-5 h-5 bg-white flex items-center justify-center mr-2">
+                        <div class="hidden w-3 h-3 bg-orange-400 rounded-full checked-radio"></div>
+                    </div>
+                    <span class="ml-1">Non</span>
+                </label>
+            </div>
+        </div>
+        <div>
+            <label class="block mb-1 text-gray-700 font-medium">Est-il facile de s'inscrire aux ateliers proposés&nbsp;?</label>
+            <div class="flex items-center gap-4">
+                <label class="inline-flex items-center">
+                    <input type="radio" name="com-inscription-facile" value="oui" required class="form-radio opacity-0 absolute h-8 w-8">
+                    <div class="hand-drawn-radio w-5 h-5 bg-white flex items-center justify-center mr-2">
+                        <div class="hidden w-3 h-3 bg-orange-400 rounded-full checked-radio"></div>
+                    </div>
+                    <span class="ml-1">Oui</span>
+                </label>
+                <label class="inline-flex items-center">
+                    <input type="radio" name="com-inscription-facile" value="non" class="form-radio opacity-0 absolute h-8 w-8">
+                    <div class="hand-drawn-radio w-5 h-5 bg-white flex items-center justify-center mr-2">
+                        <div class="hidden w-3 h-3 bg-orange-400 rounded-full checked-radio"></div>
+                    </div>
+                    <span class="ml-1">Non</span>
+                </label>
+            </div>
+        </div>
+        <div>
+            <label class="block mb-1 text-gray-700 font-medium">Commentaires/remarques sur la communication&nbsp;:</label>
+            <textarea name="com-commentaires" rows="2" class="w-full px-3 py-2 hand-drawn-input focus:outline-none focus:ring-2 focus:ring-orange-400" placeholder="Vos suggestions ou remarques sur la communication..."></textarea>
+        </div>
+        <div class="bg-orange-50 border-l-4 border-orange-400 p-3 rounded mt-4">
+            <span class="text-sm text-gray-700">
+                <b>Rappel :</b> Si l’atelier est prévu sur le temps de travail, vous serez planifié(e) sur un créneau directement pendant votre journée, donc pas de changement de planing, sans perte de salaire ou d’avantages.
+            </span>
+        </div>
+    </div>
+</div>
+
                     <!-- Commentaires supplémentaires -->
                     <div class="mb-8 fade-in">
     <div class="flex items-center mb-4">
@@ -731,8 +890,7 @@
         class="w-[95%] px-3 py-2 hand-drawn-input focus:outline-none focus:ring-2 focus:ring-green-500 ml-0"
         placeholder="Avez-vous d'autres commentaires à partager ?"></textarea>
 </div>
-
-
+                    
                     <!-- Bouton de soumission -->
                     <div class="flex justify-center">
                         <button type="submit" class="px-6 py-3 bg-green-500 text-white font-medium hand-drawn-button hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-all transform hover:scale-105">
@@ -768,19 +926,21 @@
     <script>
         // Fonction pour gérer l'option anonyme
         function toggleAnonymous() {
-            const nameField = document.getElementById('name');
-            const isAnonymous = document.getElementById('anonymous').checked;
-            
-            if (isAnonymous) {
-                nameField.value = "Anonyme";
-                nameField.disabled = true;
-                document.querySelector('label[for="anonymous"] + .hand-drawn-checkbox .checked-box').classList.remove('hidden');
-            } else {
-                nameField.value = "";
-                nameField.disabled = false;
-                document.querySelector('label[for="anonymous"] + .hand-drawn-checkbox .checked-box').classList.add('hidden');
-            }
-        }
+    const nameField = document.getElementById('name');
+    const isAnonymous = document.getElementById('anonymous').checked;
+    // Affiche ou masque l'icône de coche à côté de la checkbox anonyme
+    const anonBox = document.querySelector('#anonymous + .hand-drawn-checkbox .checked-box');
+    if (isAnonymous) {
+        nameField.value = "Anonyme";
+        nameField.disabled = true;
+        if (anonBox) anonBox.classList.remove('hidden');
+    } else {
+        nameField.value = "";
+        nameField.disabled = false;
+        if (anonBox) anonBox.classList.add('hidden');
+    }
+}
+
         
         // Fonction pour afficher/masquer les détails en fonction de l'intérêt
         function toggleSection(section) {
