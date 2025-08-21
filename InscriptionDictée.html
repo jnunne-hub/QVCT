@@ -3,10 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Inscription — Dictée de Rentrée (09/09)</title>
+  <title>Inscription — Dictée de Rentrée</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
-    // Palette & petite config Tailwind (facultative)
     tailwind.config = {
       theme: {
         extend: {
@@ -22,13 +21,10 @@
               green: '#BDE4A8'
             }
           },
-          boxShadow: {
-            sk: '0 8px 24px rgba(0,0,0,.08)'
-          },
+          boxShadow: { sk: '0 8px 24px rgba(0,0,0,.08)' },
           animation: {
             pop: 'pop .25s ease-out',
-            float: 'float 6s ease-in-out infinite',
-            pulseSlow: 'pulse 3s infinite'
+            float: 'float 6s ease-in-out infinite'
           },
           keyframes: {
             pop: { '0%': { transform: 'scale(.95)', opacity: 0 }, '100%': { transform: 'scale(1)', opacity: 1 } },
@@ -39,32 +35,24 @@
     }
   </script>
   <style>
-    /* Fond à petits points + bordures "croquis" */
-    body { background:
-      radial-gradient(circle at 1px 1px, rgba(0,0,0,.06) 1px, transparent 1px) 0 0/12px 12px,
-      #FFF9E9;
-    }
-    .sketch {
-      border: 2px dashed #3b3b3b;
-      border-radius: 18px;
-    }
-    .btn-oval {
-      border-radius: 9999px;
-      border: 2px dashed #3b3b3b;
-    }
-    .scribble {
+    body {
       background:
-        linear-gradient(120deg, rgba(255,209,102,.3), rgba(255,209,102,0)) no-repeat;
-      background-size: 100% 55%;
-      background-position: 0 70%;
+        radial-gradient(circle at 1px 1px, rgba(0,0,0,.06) 1px, transparent 1px) 0 0/12px 12px,
+        #FFF9E9;
+    }
+    .sketch { border: 2px dashed #3b3b3b; border-radius: 18px; }
+    .btn-oval { border-radius: 9999px; border: 2px dashed #3b3b3b; }
+    .scribble {
+      background: linear-gradient(120deg, rgba(255,209,102,.3), rgba(255,209,102,0)) no-repeat;
+      background-size: 100% 55%; background-position: 0 70%;
     }
   </style>
 </head>
 <body class="text-ink selection:bg-pastel-blue/50">
+
   <!-- Header -->
-  <header class="max-w-5xl mx-auto px-4 pt-8 pb-6">
+  <header class="max-w-5xl mx-auto px-4 pt-8 pb-6 space-y-4">
     <div class="sketch bg-white/80 shadow-sk p-5 flex items-center gap-4 animate-pop">
-      <!-- Icône casquette/école (SVG) -->
       <svg class="w-10 h-10 shrink-0 animate-float" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="1.5">
         <path d="M12 3L1.5 8.25 12 13.5 22.5 8.25 12 3Z" fill="#B8F2E6" />
         <path d="M4 10v4.5c0 .6.4 1.1 1 1.3l7 2.4 7-2.4c.6-.2 1-.7 1-1.3V10" fill="#F8CFE6"/>
@@ -72,285 +60,59 @@
       </svg>
       <div class="flex-1">
         <h1 class="text-2xl md:text-3xl font-bold tracking-tight">
-          <span class="scribble">Inscription — Dictée de Rentrée</span>
+          <span class="scribble">Inscription — Dictée de rentrée</span>
         </h1>
         <p class="mt-1 text-sm md:text-base text-stone-700">
-          📅 <b>Mardi 9 septembre 2025</b> • ⏱️ 15 minutes • 👥 Événement QVCT
+          ⏱️ 30 minutes • 👥 QVCT • sur le temps de production • présence sur site obligatoire
         </p>
       </div>
       <span class="hidden md:inline-flex items-center gap-2 text-sm btn-oval px-4 py-2 bg-pastel-mint/60">
-        <span>🎒 “Pause Cartable”</span>
+        🎒 “Pause Cartable”
       </span>
     </div>
 
+    <!-- Bandeau date -->
+    <div class="sketch bg-pastel-accent/60 p-4 text-center text-xl font-bold tracking-wide">
+      📅 MARDI 16 SEPTEMBRE
+    </div>
+
     <!-- Bandeau info prod -->
-    <div class="mt-4 sketch bg-pastel-blue/40 p-4 text-sm leading-relaxed">
+    <div class="sketch bg-pastel-blue/40 p-4 text-sm leading-relaxed">
       <p class="font-medium">ℹ️ L’atelier se déroule <b>sur le temps de production</b>.</p>
-      <p>Pense à prévenir ton encadrant et à choisir un créneau compatible avec l’activité du service.</p>
+      <p>La planification des créneaux est faite par l’équipe organisatrice après inscriptions.</p>
     </div>
   </header>
 
   <!-- Main -->
-  <main class="max-w-5xl mx-auto px-4 pb-16 grid lg:grid-cols-5 gap-6 items-start">
-    <!-- Form -->
-    <section class="lg:col-span-3 sketch bg-white/90 shadow-sk p-6">
-      <h2 class="text-xl font-semibold flex items-center gap-2 mb-4">
-        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="1.5">
-          <path d="M4 5h16M4 12h16M4 19h16" />
-        </svg>
-        Formulaire d’inscription
-      </h2>
-
-      <form id="inscriptionForm" class="space-y-5">
-        <div class="grid md:grid-cols-2 gap-4">
-          <div>
-            <label class="block text-sm font-medium mb-1">Prénom <span class="text-red-600">*</span></label>
-            <input name="prenom" required class="w-full sketch bg-white px-3 py-2 outline-none focus:ring-2 focus:ring-pastel-accent" placeholder="Ex. Léa" />
-          </div>
-          <div>
-            <label class="block text-sm font-medium mb-1">Nom <span class="text-red-600">*</span></label>
-            <input name="nom" required class="w-full sketch bg-white px-3 py-2 outline-none focus:ring-2 focus:ring-pastel-accent" placeholder="Ex. Martin" />
-          </div>
-        </div>
-
-        <div class="grid md:grid-cols-2 gap-4">
-          <div>
-            <label class="block text-sm font-medium mb-1">Email pro <span class="text-red-600">*</span></label>
-            <input name="email" type="email" required class="w-full sketch bg-white px-3 py-2 outline-none" placeholder="prenom.nom@entreprise.fr" />
-          </div>
-          <div>
-            <label class="block text-sm font-medium mb-1">Service / Plateau <span class="text-red-600">*</span></label>
-            <input name="service" required class="w-full sketch bg-white px-3 py-2 outline-none" placeholder="Ex. Support, Ventes..." />
-          </div>
-        </div>
-
-        <div class="grid md:grid-cols-2 gap-4">
-          <div>
-            <label class="block text-sm font-medium mb-1">Site</label>
-            <input name="site" class="w-full sketch bg-white px-3 py-2 outline-none" placeholder="Ex. Valenciennes / Amiens" />
-          </div>
-          <div>
-            <label class="block text-sm font-medium mb-1">Niveau (auto-évaluation)</label>
-            <select name="niveau" class="w-full sketch bg-white px-3 py-2 outline-none">
-              <option>Débutant</option>
-              <option selected>Intermédiaire</option>
-              <option>Confirmé</option>
-            </select>
-          </div>
-        </div>
-
+  <main class="max-w-5xl mx-auto px-4 pb-16">
+    <div class="sketch bg-white/90 p-4 md:p-6 shadow-sk">
+      <div class="flex items-center gap-3 mb-4">
+        <span class="inline-flex items-center justify-center w-10 h-10 rounded-full border-2 border-dashed border-stone-700 bg-[#B8F2E6]">🎒</span>
         <div>
-          <label class="block text-sm font-medium mb-1">Créneau préféré (09 septembre)</label>
-          <select name="creneau" id="creneauSelect" class="w-full sketch bg-white px-3 py-2 outline-none">
-            <!-- 15 minutes chacun -->
-            <option value="09:30-09:45">09:30 – 09:45</option>
-            <option value="11:00-11:15">11:00 – 11:15</option>
-            <option value="14:30-14:45">14:30 – 14:45</option>
-            <option value="16:00-16:15">16:00 – 16:15</option>
-          </select>
-          <p class="text-xs mt-2 text-stone-600">Astuce : choisis un créneau compatible avec la charge d’appels/activité de ton équipe.</p>
+          <h2 class="text-xl font-bold">Inscription — Dictée de rentrée</h2>
+          <p class="text-sm text-stone-700">Remplis le formulaire ci-dessous.</p>
         </div>
-
-        <div class="flex items-start gap-3">
-          <input id="prod" type="checkbox" required class="mt-1 w-5 h-5 accent-black" />
-          <label for="prod" class="text-sm">
-            Je confirme avoir prévenu mon encadrant : l’atelier se déroule <b>sur le temps de production</b>.
-          </label>
-        </div>
-
-        <div class="flex items-center gap-3 pt-2">
-          <button type="submit" class="btn-oval bg-pastel-accent hover:bg-pastel-accent/80 px-6 py-2 font-semibold transition animate-pop">
-            ✏️ S’inscrire
-          </button>
-          <button type="button" id="exportCsv" class="btn-oval bg-white hover:bg-stone-100 px-6 py-2">
-            📄 Exporter (CSV)
-          </button>
-        </div>
-
-        <p id="formMsg" class="mt-3 text-sm"></p>
-      </form>
-    </section>
-
-    <!-- Side: infos & planification -->
-    <aside class="lg:col-span-2 space-y-6">
-      <div class="sketch bg-white/90 shadow-sk p-6">
-        <h3 class="text-lg font-semibold flex items-center gap-2 mb-3">
-          <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="1.5">
-            <path d="M4 6h16M4 12h16M10 18h10" />
-          </svg>
-          À propos de la dictée
-        </h3>
-        <ul class="text-sm leading-6 list-disc ml-5">
-          <li>Durée : ~15 minutes, lecture + relecture.</li>
-          <li>Thème : rentrée des classes (ton léger 😊).</li>
-          <li>Matériel : stylo fourni. Photo de classe & collation à la suite.</li>
-        </ul>
       </div>
 
-      <div class="sketch bg-pastel-green/50 shadow-sk p-6">
-        <h3 class="text-lg font-semibold mb-2">Planification (vue locale)</h3>
-        <div id="planTable" class="text-sm"></div>
-        <p class="text-xs text-stone-700 mt-2">
-          Cette répartition est affichée <b>sur ton navigateur</b> (localStorage). Pour une centralisation, connecte le formulaire à ton backend / Google Sheet.
-        </p>
+      <div class="rounded-xl overflow-hidden border-2 border-dashed border-stone-700">
+        <iframe
+          src="https://docs.google.com/forms/d/e/1FAIpQLScW_0OC5WNqSjZIOBJtWf80eg4kMDtLerj5m44JAfmvs8tRtQ/viewform?embedded=true"
+          width="100%" height="1100" frameborder="0" marginheight="0" marginwidth="0">
+          Chargement…
+        </iframe>
       </div>
 
-      <div class="sketch bg-white/90 shadow-sk p-6">
-        <h3 class="text-lg font-semibold mb-2">Dress code 👔</h3>
-        <p class="text-sm">Viens habillé·e <b>comme à l’école</b> : short/jupe, chemise, bretelles, chaussettes montantes… On garde l’esprit bon enfant !</p>
-      </div>
-    </aside>
+      <p class="mt-3 text-xs text-stone-600">
+        🔒 Les réponses sont stockées par Google Forms. Export possible en Google Sheet en un clic.
+      </p>
+    </div>
   </main>
-
-  <!-- Toast -->
-  <div id="toast" class="hidden fixed bottom-4 left-1/2 -translate-x-1/2 bg-emerald-600 text-white px-5 py-3 rounded-2xl shadow-lg">
-    ✅ Inscription enregistrée ! Ton fichier calendrier (.ics) est prêt.
-  </div>
-
-  <script>
-    // --- Utils ---
-    const DATE_ISO = '20250909'; // 9 septembre 2025
-    const TZID = 'Europe/Paris';
-
-    function $(sel){ return document.querySelector(sel) }
-    function saveLocal(key, data){ localStorage.setItem(key, JSON.stringify(data)) }
-    function loadLocal(key, fallback){ try { return JSON.parse(localStorage.getItem(key)) ?? fallback } catch { return fallback } }
-
-    const STORAGE_KEY = 'dictee-inscriptions-v1';
-
-    // --- Rendu planning local ---
-    function renderPlanning(){
-      const rows = loadLocal(STORAGE_KEY, []);
-      // Agrège par créneau
-      const map = {};
-      rows.forEach(r => {
-        map[r.creneau] = (map[r.creneau] || 0) + 1;
-      });
-
-      const creneaux = ['09:30-09:45','11:00-11:15','14:30-14:45','16:00-16:15'];
-      const max = 20; // capacité indicative par créneau (à adapter)
-      let html = '<div class="space-y-3">';
-      creneaux.forEach(c => {
-        const n = map[c] || 0;
-        const pct = Math.min(100, Math.round((n / max) * 100));
-        html += `
-          <div>
-            <div class="flex justify-between text-sm mb-1"><span>🕒 ${c}</span><span>${n}/${max}</span></div>
-            <div class="h-2 sketch overflow-hidden">
-              <div class="h-full bg-emerald-600" style="width:${pct}%"></div>
-            </div>
-          </div>`;
-      });
-      html += '</div>';
-      $('#planTable').innerHTML = html;
-    }
-
-    // --- Génération ICS ---
-    function makeICS({ title, description, startStr, endStr, location = '' }){
-      // DTSTART/DTEND en heure locale avec TZID
-      const ics =
-`BEGIN:VCALENDAR
-VERSION:2.0
-PRODID:-//QVCT//Dictee//FR
-CALSCALE:GREGORIAN
-BEGIN:VEVENT
-UID:${crypto.randomUUID()}
-DTSTAMP:${new Date().toISOString().replace(/[-:]/g,'').split('.')[0]}Z
-SUMMARY:${title}
-DESCRIPTION:${description}
-LOCATION:${location}
-DTSTART;TZID=${TZID}:${startStr}
-DTEND;TZID=${TZID}:${endStr}
-END:VEVENT
-END:VCALENDAR`;
-      return 'data:text/calendar;charset=utf-8,' + encodeURIComponent(ics);
-    }
-
-    function slotToStartEnd(slot){ // "HH:MM-HH:MM" -> "YYYYMMDDTHHMMSS"
-      const [s,e] = slot.split('-');
-      const norm = t => DATE_ISO + 'T' + t.replace(':','') + '00';
-      return { start: norm(s), end: norm(e) };
-    }
-
-    // --- Soumission ---
-    const form = $('#inscriptionForm');
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-
-      // Validation HTML5 déjà active; on ajoute un message lisible
-      if (!form.reportValidity()){
-        $('#formMsg').textContent = 'Merci de compléter les champs requis.';
-        $('#formMsg').className = 'mt-3 text-sm text-red-700';
-        return;
-      }
-
-      const data = Object.fromEntries(new FormData(form).entries());
-      data.creneau = form.creneau.value;
-
-      // Sauvegarde locale
-      const all = loadLocal(STORAGE_KEY, []);
-      all.push(data);
-      saveLocal(STORAGE_KEY, all);
-
-      renderPlanning();
-
-      // Génération ICS
-      const { start, end } = slotToStartEnd(data.creneau);
-      const href = makeICS({
-        title: 'Dictée de Rentrée — Pause Cartable',
-        description: `Participant: ${data.prenom} ${data.nom}\\nService: ${data.service}\\nDictée (15 min) sur le temps de production.`,
-        startStr: start, endStr: end,
-        location: data.site || 'Sur site'
-      });
-
-      // Lien de téléchargement immédiat
-      const a = document.createElement('a');
-      a.href = href;
-      a.download = 'dictee_rentree_0909.ics';
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-
-      // UI feedback
-      $('#formMsg').innerHTML = '✅ Inscription enregistrée. Un fichier <b>.ics</b> a été téléchargé pour ton calendrier.';
-      $('#formMsg').className = 'mt-3 text-sm text-emerald-700';
-      const toast = $('#toast');
-      toast.classList.remove('hidden');
-      setTimeout(()=> toast.classList.add('hidden'), 2500);
-
-      form.reset();
-    });
-
-    // Export CSV (local)
-    $('#exportCsv').addEventListener('click', () => {
-      const rows = loadLocal(STORAGE_KEY, []);
-      const header = ['prenom','nom','email','service','site','niveau','creneau'];
-      const csv = [header.join(';')].concat(
-        rows.map(r => header.map(h => (`${(r[h]||'')}`).replaceAll(';', ',')).join(';'))
-      ).join('\\n');
-
-      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'inscriptions_dictee_0909.csv';
-      a.click();
-      URL.revokeObjectURL(url);
-    });
-
-    renderPlanning();
-  </script>
 
   <!-- Footer -->
   <footer class="max-w-5xl mx-auto px-4 pb-10">
     <div class="mt-6 text-xs text-stone-600 flex items-center justify-between">
       <span>© 2025 — Journée QVCT “Pause Cartable”</span>
-      <span class="inline-flex items-center gap-2">
-        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="1.5">
-          <path d="M4 5h16M4 12h16M4 19h16"/>
-        </svg>
-        Dictée • Photo de classe • Collation
-      </span>
+      <span class="inline-flex items-center gap-2">Dictée • Photo de classe • Collation</span>
     </div>
   </footer>
 </body>
